@@ -1,0 +1,92 @@
+{% extends 'core/base.html' %} {% block title %}Vendor admin | {% endblock %} 
+{% block content %}
+<div class="row">
+  <div class="col-lg-12">
+    <div class="box-element">
+      <h1 class="title">Vendor admin - {{ vendor.name }}</h1>
+      <strong>My balance: </strong>${{ vendor.get_balance }}<br />
+      <strong>My paid amount: </strong>${{ vendor.get_paid_amount }}
+      <hr />
+      <a href="{% url 'edit_vendor' %}" class="btn btn-warning"
+        >Edit</a
+      >
+      <a href="{% url 'logout' %}" class="btn btn-danger"
+        >Log out</a
+      >
+    </div>
+  </div>
+</div>
+<br>
+<div class="box-element">
+    <h2 class="is-size-3 mb-4">My products</h2>
+    <a href="{% url 'add_product' %}" class="btn btn-primary"
+      >Add product</a
+    >
+    <hr>
+    <div class="cart-row">
+      <div style="flex: 2"><strong>Title</strong></div>
+      <div style="flex: 1"><strong>Price</strong></div>
+      <div style="flex: 1"><strong>Action</strong></div>
+    </div>
+
+  {% if products %}
+      {% for product in products %}
+      <div class="cart-row">
+        <div style="flex: 2">
+          <a href="{% url 'product' product.category.slug product.slug %}"
+            >{{ product.title }}</a
+          >
+        </div style="flex: 2">
+        <div style="flex: 1">${{ product.price }}</div >
+        <div style="flex: 1"><a href="{% url 'edit_product' product.id %}" class="btn btn-primary">Edit</a></div >
+      </div>
+      {% endfor %}
+  {% else %}
+  <p>You don't have any products yet...</p>
+  {% endif %}
+</div>
+<br>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box-element">
+            <h2 class="is-size-3 mb-4">My orders</h2>
+            <div class="cart-row">
+                <div style="flex: 2"><strong>Title</strong></div>
+                <div style="flex: 1"><strong>Price</strong></div>
+                
+                <div style="flex: 1"><strong>Quantity</strong></div>
+                <div style="flex: 1"><strong>Paid</strong></div>
+                <div style="flex: 1"><strong>Total</strong></div>
+                <div style="flex: 2"><strong>Order # - Buyer</strong></div>
+            </div>
+            {% if orders %} {% for order in orders %}
+            {% for item in order.items.all %}
+            {% if item.vendor == request.user.vendor %}
+            <div class="cart-row">
+                <div style="flex: 2">{{ item.product.title }}</div>
+                <div style="flex: 1">${{ item.product.price }}</div>
+                
+                <div style="flex: 1">{{ item.quantity }}</div>
+                <div style="flex: 1">{{ item.vendor_paid|yesno:"Yes,No" }}</div>
+                <div style="flex: 1">${{ item.get_total_price }}</div>
+                <div style="flex: 2" class="downdrop">
+                    <div class="dropbtn">
+                        <p style="color: black;">#{{ order.id }} - {{ order.first_name }} {{ order.last_name }}</p>
+                      </div>
+                      <div class="downdrop-content" style="padding: 20px;">
+                        <b>Name:</b> {{ order.first_name }} {{ order.last_name }}<br />
+                        <b>Address:</b> {{ order.address }}<br />
+                        <b>Zip and place:</b> {{ order.zipcode }} {{ order.place }}<br />
+                        <b>E-mail:</b> {{ order.email }}<br />
+                        <b>Phone:</b> {{ order.phone }}
+                      </div>
+                </div>
+            </div>
+            {% endif %} {% endfor %} 
+            {% endfor %} {% endif %}
+        </div>
+    </div>
+</div>
+<br><br><br><br>    
+         
+{% endblock %}

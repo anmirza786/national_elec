@@ -1,0 +1,38 @@
+{% extends 'core/base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<br>
+    <div class="row" style="justify-content: center; align-items: center;">
+        <div class="col-lg-6">
+            <div class="box-element">
+                <h1 class="title">Become vendor</h1>
+                <form method="post" action=".">
+                    {% csrf_token %}
+                    {% for field in form.visible_fields %}
+                    <div class="form-group">
+                        <label class="form-label">{{ field.label_tag }}</label>
+                        {% render_field field class="form-control" placeholder="Enter Username" name="username" %}
+                        
+                        <small class="form-text text-muted">{{ field.help_text }}</small><br>
+                        {% if field.errors %}
+                        <small class="form-text" style="color: red;">{{ field.help_text }}</small>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    <div class="form-field" style="margin-top: 15px;">
+        
+                            <button class="btn btn-primary">Sign up</button>
+        
+                    </div>
+                </form>
+                <hr>
+                    <p class="subtitle">Already have an account?</p>
+                    <a href="{% url 'login' %}" class="btn btn-warning">Log in</a>
+        
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+{% endblock %}
