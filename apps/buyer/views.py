@@ -47,22 +47,50 @@ def profile(request):
     buyer = request.user.buyer
     subject = 'Thank you for registering to our site'
     email_from = settings.EMAIL_HOST_USER
-    recipient_list = ['anmirza68@gmail.com']
+    recipient_list = [request.user.email]
     #send=send_mail( subject, message, email_from, recipient_list )
     html_temp = "buyer/msg.html"
     html_msg = render_to_string(html_temp)
     msgs = EmailMultiAlternatives(
         subject, html_msg, email_from, recipient_list)
     msgs.attach_alternative(html_msg, "text/html")
-    order = OrderItem.objects.all()
+    
+
+    ## Editing Profile
+
+    if request.method == 'POST':
+        complete_name = request.POST.get('name', '')
+        email = request.POST.get('email', '')
+        phone = request.POST.get('phone', '')
+        address = request.POST.get('address', '')
+        city = request.POST.get('city', '')
+
+        buyer.created_by.email = email
+        buyer.created_by.save()
+
+        buyer.complete_name = complete_name
+        buyer.phone = phone
+        buyer.address = address
+        buyer.city = city
+        buyer.save()
+
+        return redirect('profile')
+    return render(request, 'buyer/buyer_profile.html', {'buyer': buyer})
+def viewOrders(request):
+    buyer = request.user.buyer
+    
+    orders = []
+    order = Order.objects.filter(buyer=buyer)
     value = get_paid_amount(buyer)
-    return render(request, 'buyer/buyer_profile.html', {'buyer': buyer, 'order': order, 'value': get_paid_amount(buyer)})
+    return render(request, 'buyer/total-orders.html', {'order': order,'value':value})
+# def varifyOrder(request,pk):
 
-
-def send(link, email):
+#     return render(request, 'buyer/total-orders.html', {'order': order,'value':value})
+def send(link, email,request):
     subject = 'Thank you for registering to our site'
     email_from = settings.EMAIL_HOST_USER
-    recipient_list = ['anmirza68@gmail.com']
+    user = request.user
+    recipient_list = [user.email]
     #send=send_mail( subject, message, email_from, recipient_list )
     html_temp = '<a href="{% url home %}">hh</a>'
     html_msg = render_to_string(html_temp, {'link': link})
@@ -80,13 +108,12 @@ def edit_profile(request):
         name = request.POST.get('name', '')
         email = request.POST.get('email', '')
 
-        if name:
-            buyer.created_by.email = email
-            buyer.created_by.save()
+        buyer.created_by.email = email
+        buyer.created_by.save()
 
-            buyer.name = name
-            buyer.save()
+        buyer.name = name
+        buyer.save()
 
-            return redirect('buyer_profile')
+        return redirect('buyer_profile')
 
     return render(request, 'buyer/edit_profile.html', {'buyer': buyer})

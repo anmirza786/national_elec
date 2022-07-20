@@ -6,7 +6,7 @@ from apps.product.models import Product
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
-class OrderStatusEnum(models.Model):
+class OrderStatusEnum(models.IntegerChoices):
     VARIFIED = 1 ,'Varified'
     NOTVARIFIED = 2, 'Not Varified'
     DELIVERED = 3, 'Delivered'
@@ -15,13 +15,12 @@ class Order(models.Model):
     order_status = models.SmallIntegerField(choices=OrderStatusEnum.choices,default=OrderStatusEnum.NOTVARIFIED)
     created_at = models.DateTimeField(auto_now_add=True)
     paid_amount = models.DecimalField(max_digits=8, decimal_places=2)
+    paid_slip = models.FileField(upload_to='slips/',blank=True)
     # vendors = models.ManyToManyField(Vendor, related_name='orders')
 
     class Meta:
         ordering = ['-created_at']
 
-    def __str__(self):
-        return self.first_name
 
 
 class OrderItem(models.Model):

@@ -29,8 +29,8 @@
 </header>
 
 
-<section class="meetings-page" style="color: white;" >
-    <h2 style="text-align: center;">Cart</h2>
+<section class="meetings-page" style="color: white;">
+  <h2 style="text-align: center;">Cart</h2>
   {% if cart %}
   <div class="container meetings-page" id="meetings">
     <div class="row">
@@ -87,71 +87,11 @@
   <br />
   <br />
   <div class="container meetings-page" id="meetings" style="padding-top: 20px !important;">
-    <h2 class="subtitle">Contact information</h2>
     <div class="row">
       <div class="col-lg-6">
         <div id="form-wraper" class="box-element">
           <form action="." method="post" id="payment-form" style="color: wh;">
-            {% csrf_token %} {% if form.non_field_errors %}
-            <div class="notification is-danger">{{ form.non_field_errors}}</div>
-            {% endif %} {% if form.errors %}
-            <div class="notification is-danger">
-              <ul>
-                {% for field in form %} {% for error in field.errors %}
-                <li><strong>{{ field.label }}: </strong>{{ error }}</li>
-                {% endfor %} {% endfor %}
-              </ul>
-            </div>
-            {% endif %}
-            <div id="user-info">
-              <div class="column is-6">
-                <p>Personal information:</p>
-                <div class="form-field">
-                  <div class="control">
-                    <input class="form-control" type="text" name="first_name" placeholder="First Name" />
-                  </div>
-                </div>
-
-                <div class="form-field">
-                  <div class="control">
-                    <input class="form-control" type="text" name="last_name" placeholder="Last Name" />
-                  </div>
-                </div>
-
-                <div class="form-field">
-                  <div class="control">
-                    <input class="form-control" type="email" name="email" placeholder="Email" />
-                  </div>
-                </div>
-
-                <div class="form-field">
-                  <div class="control">
-                    <input class="form-control" type="text" name="phone" placeholder="Phone Number" />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div id="shiping-imfo">
-              <hr />
-              <p>Shipping information:</p>
-              <div class="form-field">
-                <div class="control">
-                  <input class="form-control" type="text" name="address" placeholder="Address" />
-                </div>
-              </div>
-
-              <div class="form-field">
-                <div class="control">
-                  <input class="form-control" type="text" name="zipcode" placeholder="Zipcode" />
-                </div>
-              </div>
-
-              <div class="form-field">
-                <div class="control">
-                  <input class="form-control" type="text" name="place" placeholder="Place/City" />
-                </div>
-              </div>
-            </div>
+            {% csrf_token %}
             <button class="btn btn-success btn-block">Checkout</button>
           </form>
         </div>
@@ -162,8 +102,8 @@
   <br><br>
   {% else %}
   <div class="container meetings-page" id="meetings" style="padding-top: 20px !important;">
-    <p>You don't have any products in your cart!</p>
+    <p style="color: white;">You don't have any products in your cart!</p>
   </div>
   {% endif %}
 </section>
-{% endblock %} 
+{% endblock %}

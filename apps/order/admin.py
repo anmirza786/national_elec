@@ -4,7 +4,7 @@ from .models import Order, OrderItem
 
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('buyer', 'created_at', 'paid_amount')
+    list_display = ('buyer','order_status', 'created_at', 'paid_amount')
 class OrderItemAdmin(admin.ModelAdmin):
     list_display = ('order', 'product', 'buyer','quantity','price')
 

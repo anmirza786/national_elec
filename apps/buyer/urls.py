@@ -20,7 +20,7 @@ from . import views
 
 urlpatterns = [
     path('signup/', views.become_buyer, name='signup'),
-    path('edit_profile/', views.edit_profile, name='edit_profile'),
+    path('total-orders/', views.viewOrders, name='total-orders'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('login/', auth_views.LoginView.as_view(template_name='buyer/login.html'), name='login'),
     path('profile/', views.profile, name='profile'),

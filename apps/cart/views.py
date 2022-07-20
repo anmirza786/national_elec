@@ -18,31 +18,11 @@ def cart_detail(request):
         print(current_user)
 
         if request.method == 'POST':
-            form = CheckoutForm(request.POST)
-
-            if form.is_valid():
                 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-                stripe_token = form.cleaned_data['stripe_token']
-
                 try:
-                    charge = stripe.Charge.create(
-                        amount=int(cart.get_total_cost() * 100),
-                        currency='USD',
-                        description='Charge from Interiorshop',
-                        source=stripe_token
-                    )
 
-                    first_name = form.cleaned_data['first_name']
-                    last_name = form.cleaned_data['last_name']
-                    email = form.cleaned_data['email']
-                    phone = form.cleaned_data['phone']
-                    address = form.cleaned_data['address']
-                    zipcode = form.cleaned_data['zipcode']
-                    place = form.cleaned_data['place']
-
-                    order = checkout(request, first_name, last_name, email,
-                                     address, zipcode, place, phone, cart.get_total_cost(), current_user)
+                    order = checkout(request, cart.get_total_cost(), current_user)
 
                     cart.clear()
 
@@ -71,7 +51,7 @@ def cart_detail(request):
 
         return redirect('cart')
 
-    return render(request, 'cart/cart.html', {'form': form, 'stripe_pub_key': settings.STRIPE_PUB_KEY})
+    return render(request, 'cart/cart.html', {'stripe_pub_key': settings.STRIPE_PUB_KEY})
 
 
 def success(request):
