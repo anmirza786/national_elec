@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
-
+from .models import ProductStatusEnum
 from .forms import AddToCartForm
 from .models import Category, Product
 
@@ -13,8 +13,15 @@ from apps.cart.cart import Cart
 def search(request):
     query = request.GET.get('query', '')
     products = Product.objects.filter(Q(title__icontains=query) | Q(description__icontains=query))
-
-    return render(request, 'product/search.html', {'products': products, 'query': query})
+    paginator = Paginator(products,9)
+    page_number = request.GET.get('page')
+    try:
+        page_obj = paginator.get_page(page_number)
+        pages = paginator.page(page_number)
+    except:
+        page_obj = paginator.get_page(1)
+        pages = paginator.page(1)
+    return render(request, 'product/search.html', {'query': query,'page_obj':page_obj,'product':paginator,'pages':pages})
 
 def product(request, category_slug, product_slug):
     cart = Cart(request)
@@ -58,13 +65,22 @@ def product(request, category_slug, product_slug):
 
 def category(request, category_slug):
     category = get_object_or_404(Category, slug=category_slug)
-
-    return render(request, 'product/category.html', {'category': category})
+    product = Product.objects.filter(category=category)
+    # print(product)
+    paginator = Paginator(product,9)
+    page_number = request.GET.get('page')
+    try:
+        page_obj = paginator.get_page(page_number)
+        pages = paginator.page(page_number)
+    except:
+        page_obj = paginator.get_page(1)
+        pages = paginator.page(1)
+    return render(request, 'product/category.html', {'category': category,'page_obj':page_obj,'product':paginator,'pages':pages})
 
 def veiwProducts(request):
     product = Product.objects.all()
     # print(product)
-    paginator = Paginator(product,20)
+    paginator = Paginator(product,9)
     page_number = request.GET.get('page')
     try:
         page_obj = paginator.get_page(page_number)
@@ -78,7 +94,7 @@ def veiwProducts(request):
 def veiwProductsSoon(request):
     product = Product.objects.filter(product_status = ProductStatusEnum.SOON)
     # print(product)
-    paginator = Paginator(product,20)
+    paginator = Paginator(product,9)
     page_number = request.GET.get('page')
     try:
         page_obj = paginator.get_page(page_number)
@@ -92,7 +108,7 @@ def veiwProductsSoon(request):
 def veiwProductsAvailable(request):
     product = Product.objects.filter(product_status = ProductStatusEnum.AVAILABLE)
     # print(product)
-    paginator = Paginator(product,20)
+    paginator = Paginator(product,9)
     page_number = request.GET.get('page')
     try:
         page_obj = paginator.get_page(page_number)
@@ -106,7 +122,7 @@ def veiwProductsAvailable(request):
 def veiwProductsStock(request):
     product = Product.objects.filter(product_status = ProductStatusEnum.OUTOFSTOCK)
     # print(product)
-    paginator = Paginator(product,20)
+    paginator = Paginator(product,9)
     page_number = request.GET.get('page')
     try:
         page_obj = paginator.get_page(page_number)

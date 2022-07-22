@@ -4,34 +4,7 @@
 
 {% block content %}
 
-<header class="header-area header-sticky">
-  <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <nav class="main-nav">
-          <!-- ***** Logo Start ***** -->
-          <a href="{% url 'frontpage' %}" class="logo">
-            <img src="{% static 'assets/images/logo.png' %}" width="100" height="80">
-          </a>
-          <!-- ***** Logo End ***** -->
-          <!-- ***** Menu Start ***** -->
-          <ul class="nav">
-            <li><a href="{% url 'frontpage' %}">Home</a></li>
-            <li><a href="{% url 'products' %}">Products</a></li>
 
-
-            <li><a href="index.html">Contact Us</a></li>
-          </ul>
-          <a class='menu-trigger'>
-            <span>Menu</span>
-          </a>
-          <!-- ***** Menu End ***** -->
-        </nav>
-      </div>
-    </div>
-  </div>
-
-</header>
 
 <section class="upcoming-meetings" id="meetings-sig" style="padding-bottom: 0px !important; padding-top: 150px;">
   <div class="container">
@@ -47,11 +20,11 @@
           <ul>
 
             <li><a href="{% url 'profile' %}" style="color: #a12c2f;">Profile Details</a></li><br>
-            <li><a href="#">Varify Orders</a></li><br>
+            <li><a href="{% url 'varify-order' %}">Varify Orders</a></li><br>
             <li><a href="{% url 'total-orders' %}">Total Orders</a></li><br>
-            <li><a href="#">Varified Orders</a></li><br>
-            <li><a href="#">Not Varified Orders</a></li><br>
-            <li><a href="#">Delivered Orders</a></li><br>
+            <li><a href="{% url 'varified-orders' %}">Varified Orders</a></li><br>
+            <li><a href="{% url 'notvarified-orders' %}">Not Varified Orders</a></li><br>
+            <li><a href="{% url 'notvarified-orders' %}">Delivered Orders</a></li><br>
           </ul>
           <div class="main-button-red">
             <a href="{% url 'products' %}"><i class="fa-solid fa-arrow-left"></i> Products</a>

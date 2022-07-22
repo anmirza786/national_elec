@@ -1,8 +1,8 @@
 from email import message
 from django.shortcuts import redirect, render
 from apps.cart.cart import Cart
-from apps.core.forms import ContactForm, FeedbackForm
-from apps.core.models import Contact, Feedback
+
+from apps.core.models import Contact,PopularClients
 
 from apps.product.models import Product,Category
 import random
@@ -17,36 +17,17 @@ def frontpage(request):
     else:
         random_products = random.sample(random_products,random_products.__len__())
     categories = Category.objects.all()
-    return render(request, 'core/frontpage.html', {'newest_products': newest_products,'random_products':random_products,'categories':categories})
+    g=Product.objects.all()
+    for g in g:
+        print(g.title,'\t',g.image)
+    clients = PopularClients.objects.all()
+    if request.method=='POST':
+        name = request.POST.get('name', '')
+        email = request.POST.get('email', '')
+        subject = request.POST.get('subject', '')
+        message = request.POST.get('message', '')
 
+        contact = Contact.objects.create(name=name,email=email,subject=subject,message=message)
 
-def contact(request):
-    if request.method == 'POST':
-        form = ContactForm(request.POST)
+    return render(request, 'core/frontpage.html', {'newest_products': newest_products,'random_products':random_products,'categories':categories,'clients':clients})
 
-        if form.is_valid():
-            contact = form.save()
-
-            vendor = Contact.objects.create(
-                name=contact.name, email=contact.email, message=contact.message)
-
-            return redirect('frontpage')
-    else:
-        form = ContactForm()
-    return render(request, 'core/contact.html', {'form': form})
-
-
-def feedback(request):
-    if request.method == 'POST':
-        form = FeedbackForm(request.POST)
-
-        if form.is_valid():
-            feedback = form.save()
-
-            vendor = Feedback.objects.create(
-                name=feedback.name, feedback=feedback.feedback)
-
-            return redirect('frontpage')
-    else:
-        form = FeedbackForm()
-    return render(request, 'core/feedback.html',{'form':form})

@@ -37,13 +37,17 @@ LOGOUT_REDIRECT_URL = 'frontpage'
 SESSION_COOKIE_AGE = 86400
 CART_SESSION_ID = 'cart'
 
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'apikey'
-EMAIL_HOST_PASSWORD = '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'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-DEFAULT_EMAIL_FROM = 'Interiorstore <noreply@codewithstein.com>'
-
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER='anmirza68@gmail.com'
+# EMAIL_HOST_PASSWORD = 'Ahmadmirza@123'
+# DEFAULT_FROM_EMAIL = 'anmirza68@gmail.com'
+EMAIL_HOST = 'smtp.mailtrap.io'
+EMAIL_HOST_USER = 'ca62f5ec17dcb4'
+EMAIL_HOST_PASSWORD = '504651e4dbe3c1'
+EMAIL_PORT = '2525'
 # Application definition
 
 INSTALLED_APPS = [

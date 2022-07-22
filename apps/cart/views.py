@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from .cart import Cart
 from .forms import CheckoutForm
 
-from apps.order.utilities import checkout, notify_customer, notify_vendor
+from apps.order.utilities import checkout, notify_customer
 
 
 def cart_detail(request):
@@ -18,21 +18,14 @@ def cart_detail(request):
         print(current_user)
 
         if request.method == 'POST':
-                stripe.api_key = settings.STRIPE_SECRET_KEY
+            order = checkout(request, cart.get_total_cost(), current_user)
 
-                try:
+            cart.clear()
+            print(order)
+            notify_customer(order)
+            
 
-                    order = checkout(request, cart.get_total_cost(), current_user)
-
-                    cart.clear()
-
-                    notify_customer(order)
-                    notify_vendor(order)
-
-                    return redirect('success')
-                except Exception:
-                    messages.error(
-                        request, 'There was something wrong with the payment')
+            return redirect('success')
         else:
             form = CheckoutForm()
     else:

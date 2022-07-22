@@ -1,34 +1,40 @@
 
+from email.message import EmailMessage
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+
 from django.http.response import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
+from apps.buyer.forms import RegisterForm
+
+from apps.order.forms import OrderVarifyForm
 
 # from apps.luckydraw.models import LuckyDraws, Drawables
 from .models import Buyer
 from django.core.mail import EmailMultiAlternatives
-from django.template.loader import render_to_string
-
-from django.conf import settings
+from django.template.loader import render_to_string, get_template
+from django.contrib.auth import login
+from interiorshop import settings
 
 
 # Create your views here.
-from ..order.models import OrderItem, Order
+from ..order.models import OrderItem, Order, OrderStatusEnum
 
 
 def become_buyer(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = RegisterForm(request.POST)
 
         if form.is_valid():
             user = form.save()
 
             buyer = Buyer.objects.create(name=user.username, created_by=user)
+            login(request, user)
 
-            return redirect('frontpage')
+            send(request)
+            return redirect('profile')
     else:
-        form = UserCreationForm()
+        form = RegisterForm()
 
     return render(request, 'buyer/become_buyer.html', {'form': form})
 
@@ -45,17 +51,6 @@ def get_paid_amount(b):
 @login_required
 def profile(request):
     buyer = request.user.buyer
-    subject = 'Thank you for registering to our site'
-    email_from = settings.EMAIL_HOST_USER
-    recipient_list = [request.user.email]
-    #send=send_mail( subject, message, email_from, recipient_list )
-    html_temp = "buyer/msg.html"
-    html_msg = render_to_string(html_temp)
-    msgs = EmailMultiAlternatives(
-        subject, html_msg, email_from, recipient_list)
-    msgs.attach_alternative(html_msg, "text/html")
-    
-
     ## Editing Profile
 
     if request.method == 'POST':
@@ -78,42 +73,57 @@ def profile(request):
     return render(request, 'buyer/buyer_profile.html', {'buyer': buyer})
 def viewOrders(request):
     buyer = request.user.buyer
-    
-    orders = []
-    order = Order.objects.filter(buyer=buyer)
+    order = OrderItem.objects.filter(buyer=buyer)
     value = get_paid_amount(buyer)
     return render(request, 'buyer/total-orders.html', {'order': order,'value':value})
-# def varifyOrder(request,pk):
 
-#     return render(request, 'buyer/total-orders.html', {'order': order,'value':value})
-def send(link, email,request):
+def viewOrdersVarified(request):
+    buyer = request.user.buyer
+    order = OrderItem.objects.filter(buyer=buyer)
+    value = get_paid_amount(buyer)
+    return render(request, 'buyer/varified-order.html', {'order': order,'value':value})
+
+def viewOrdersNotVarified(request):
+    buyer = request.user.buyer
+    order = OrderItem.objects.filter(buyer=buyer)
+    value = get_paid_amount(buyer)
+    return render(request, 'buyer/notvarified-order.html', {'order': order,'value':value})
+
+def viewOrdersDelivered(request):
+    buyer = request.user.buyer
+    order = OrderItem.objects.filter(buyer=buyer)
+    value = get_paid_amount(buyer)
+    return render(request, 'buyer/delivered-order.html', {'order': order,'value':value})
+
+def viewOrderVarify(request):
+    buyer = request.user.buyer
+    order = OrderItem.objects.filter(buyer=buyer)
+    value = get_paid_amount(buyer)
+    return render(request, 'buyer/varify-orders.html', {'order': order,'value':value})
+
+def varifyOrder(request,pk):
+    # print(pk)
+    order=get_object_or_404(Order,pk=pk)
+    form = OrderVarifyForm(instance=order)
+    if request.method=='POST':
+        slip = request.POST.get('paid_slip', '')
+        order.paid_slip=slip
+        order.save()
+        # return redirect('varify-order')
+    else:
+        form = OrderVarifyForm(instance=order)
+    return render(request, 'buyer/varify.html',{'form':form,'order':order})
+
+def send(request):
     subject = 'Thank you for registering to our site'
     email_from = settings.EMAIL_HOST_USER
-    user = request.user
-    recipient_list = [user.email]
+    recipient_list = [request.user.email]
     #send=send_mail( subject, message, email_from, recipient_list )
-    html_temp = '<a href="{% url home %}">hh</a>'
-    html_msg = render_to_string(html_temp, {'link': link})
-    msg = EmailMultiAlternatives(subject, html_msg, email_from, recipient_list)
-    msg.content_subtype = 'html'
-    msg.send()
-    return HttpResponse('redirect to a new page')
+    html_temp = render_to_string("buyer/msg.html")
+    html_msg = render_to_string("buyer/msg.html")
+    msgs = EmailMultiAlternatives(subject, html_msg, email_from, recipient_list)
+    # msgs.content_subtype = "html"
+    msgs.attach_alternative(html_temp, "text/html")
+    msgs.send()
 
 
-@login_required
-def edit_profile(request):
-    buyer = request.user.buyer
-
-    if request.method == 'POST':
-        name = request.POST.get('name', '')
-        email = request.POST.get('email', '')
-
-        buyer.created_by.email = email
-        buyer.created_by.save()
-
-        buyer.name = name
-        buyer.save()
-
-        return redirect('buyer_profile')
-
-    return render(request, 'buyer/edit_profile.html', {'buyer': buyer})

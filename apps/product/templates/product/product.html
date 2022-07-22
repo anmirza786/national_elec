@@ -15,12 +15,25 @@
                     </a>
                     <!-- ***** Logo End ***** -->
                     <!-- ***** Menu Start ***** -->
+
                     <ul class="nav">
-                        <li><a href="{% url 'frontpage' %}">Home</a></li>
-                        <li><a href="{% url 'products' %}" class="active">Products</a></li>
+                        <li class="scroll-to-section"><a href="{% url 'frontpage' %}">Home</a></li>
+                        <li><a href="{% url 'products' %}">Products</a></li>
 
-
-                        <li><a href="index.html">Contact Us</a></li>
+                        {% if request.user.is_authenticated %}
+                        <li><a href="{% url 'profile' %}"><i class="fa-solid fa-user"></i></a></li>
+                        <li><a href="{% url 'cart' %}"><i class="fa-solid fa-cart-shopping"></i>
+                                <span class="badge badge-light"
+                                    style="padding: 3px; margin: 0;background-color: white; color: black; top: 0">
+                                    {{ cart|length }}</span></a></li>
+                        <li>
+                            <a href="{% url 'logout' %}" class="btn btn-secondary"
+                                style="padding: 0px 20px;margin: 0; color:white">Log out</a>
+                        </li>
+                        {% endif %}
+                        {% if not request.user.is_authenticated %}
+                        <li><a href="{% url 'login' %}" class="navbar-item">Login</a></li>
+                        {% endif %}
                     </ul>
                     <a class='menu-trigger'>
                         <span>Menu</span>
@@ -104,7 +117,7 @@
 
                 </form>
                 {% endif %}
-                {% if similar_products %}
+                <!-- {% if similar_products %}
                 <hr>
 
                 <div class="columns is-multiline">
@@ -118,36 +131,40 @@
                         {% endfor %}
                     </div>
                 </div>
-                {% endif %}
+                {% endif %} -->
             </div>
         </div>
     </div>
-    </div>
-    {% endblock %}
+    <div class="footer">
+        <p>Copyright © 2022 StarSOft.com.pk
 
-    {% block scripts %}
-    {{ imagesstring|json_script:"json-imagesstring" }}
-    <script src="https://unpkg.com/vue@next"></script>
-    <script>
-        const ProductApp = {
-            data() {
-                return {
-                    mainImage: '',
-                    images: []
-                }
-            },
-            mounted() {
-                this.images = JSON.parse(JSON.parse(document.getElementById("json-imagesstring").textContent))
-                this.mainImage = this.images[0]
-            },
-            methods: {
-                changeMainImage(image) {
-                    this.mainImage = image
-                }
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+{{ imagesstring|json_script:"json-imagesstring" }}
+<script src="https://unpkg.com/vue@next"></script>
+<script>
+    const ProductApp = {
+        data() {
+            return {
+                mainImage: '',
+                images: []
+            }
+        },
+        mounted() {
+            this.images = JSON.parse(JSON.parse(document.getElementById("json-imagesstring").textContent))
+            this.mainImage = this.images[0]
+        },
+        methods: {
+            changeMainImage(image) {
+                this.mainImage = image
             }
         }
+    }
 
-        Vue.createApp(ProductApp).mount('#productapp')
-        console.log(ProductApp)
-    </script>
-    {% endblock %}
+    Vue.createApp(ProductApp).mount('#productapp')
+    console.log(ProductApp)
+</script>
+{% endblock %}

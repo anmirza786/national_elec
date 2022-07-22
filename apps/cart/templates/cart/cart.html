@@ -1,32 +1,6 @@
 {% extends 'core/base.html' %} {% load static %} {% block title %}Cart |
 {% endblock %} {% block content %}
-<header class="header-area header-sticky">
-  <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <nav class="main-nav">
-          <!-- ***** Logo Start ***** -->
-          <a href="{% url 'frontpage' %}" class="logo">
-            <img src="{% static 'assets/images/logo.png' %}" width="100" height="80">
-          </a>
-          <!-- ***** Logo End ***** -->
-          <!-- ***** Menu Start ***** -->
-          <ul class="nav">
-            <li><a href="{% url 'frontpage' %}">Home</a></li>
-            <li><a href="{% url 'products' %}">Products</a></li>
 
-
-            <li><a href="index.html">Contact Us</a></li>
-          </ul>
-          <a class='menu-trigger'>
-            <span>Menu</span>
-          </a>
-          <!-- ***** Menu End ***** -->
-        </nav>
-      </div>
-    </div>
-  </div>
-</header>
 
 
 <section class="meetings-page" style="color: white;">
@@ -66,15 +40,17 @@
               <img style="width: 100px;" class="row-image" src="{{ item.product.get_thumbnail }}" />
             </div>
             <div style="flex: 2">{{ item.product.title }}</div>
-            <div style="flex: 1">${{ item.product.price }}</div>
+            <div style="flex: 1">Rs. {{ item.product.price }}</div>
             <div style="flex: 1; justify-content: center; align-items: center">
-              <div class="quantity">
-                <div class="quantity">{{ item.quantity }}</div>
-                <a href="?change_quantity={{ item.id }}&quantity=1">&#11205;</a>
-                <a href="?change_quantity={{ item.id }}&quantity=-1">&#9660;</a>
+              <div style="display: flex;">
+                <div class="quantity" style="align-self: center; margin-right: 10px;">{{ item.quantity }}</div>
+                <div style="display: flex; flex-direction: column;">
+                  <a href="?change_quantity={{ item.id }}&quantity=1" style="color: white;">&#11205;</a>
+                  <a href="?change_quantity={{ item.id }}&quantity=-1" style="color: white;">&#9660;</a>
+                </div>
               </div>
             </div>
-            <div style="flex: 1">${{ item.total_price }}</div>
+            <div style="flex: 1">Rs.{{ item.total_price }}</div>
             <div style="flex: 1">
               <a class="btn btn-danger" href="?remove_from_cart={{ item.id }}" class="delete">&#9003;</a>
             </div>
@@ -102,8 +78,12 @@
   <br><br>
   {% else %}
   <div class="container meetings-page" id="meetings" style="padding-top: 20px !important;">
-    <p style="color: white;">You don't have any products in your cart!</p>
+    <p style="color: white; text-align: center;">You don't have any products in your cart!</p>
   </div>
   {% endif %}
+  <div class="footer">
+    <p>Copyright © 2022 StarSOft.com.pk
+
+  </div>
 </section>
 {% endblock %}

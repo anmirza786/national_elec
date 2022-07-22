@@ -2,63 +2,8 @@
 {% load static %}
 {% block content %}
 <!-- Sub Header -->
-<div class="sub-header">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-sm-8">
-        <div class="left-content">
 
-        </div>
-      </div>
-      <div class="col-lg-4 col-sm-4">
-        <div class="right-icons">
-          <ul>
-            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-            <li><a href="#"><i class="fa fa-behance"></i></a></li>
-            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<header class="header-area header-sticky">
-  <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <nav class="main-nav">
-          <!-- ***** Logo Start ***** -->
-          <a href="{% url 'frontpage' %}" class="logo">
-            <img src="{% static 'assets/images/logo.png' %}" width="100" height="80">
-          </a>
-          <!-- ***** Logo End ***** -->
-          <!-- ***** Menu Start ***** -->
-
-          <ul class="nav">
-            <li class="scroll-to-section"><a href="{% url 'frontpage' %}" class="active">Home</a></li>
-            <li><a href="{% url 'products' %}">Products</a></li>
-            {% if request.user.is_authenticated %}
-            <li>
-              <a href="{% url 'logout' %}" class="btn btn-secondary"
-                style="padding: 0px 20px;margin: 0; color:white">Log out</a>
-            </li>
-            {% else %}
-            <li><a href="{% url 'login' %}" class="navbar-item">Login</a></li>
-            {% endif %}
-            <li class="scroll-to-section"><a href="#contact">Contact Us</a></li>
-            <li><a href="{% url 'profile' %}"><i class="fa-solid fa-user"></i></a></li>
-            <li><a href="{% url 'cart' %}"><i class="fa-solid fa-cart-shopping"></i></a></li>
-          </ul>
-          <a class='menu-trigger'>
-            <span>Menu</span>
-          </a>
-          <!-- ***** Menu End ***** -->
-        </nav>
-      </div>
-    </div>
-  </div>
-</header>
+  
 <!-- ***** Header Area End ***** -->
 
 <!-- ***** Main Banner Area Start ***** -->
@@ -238,11 +183,14 @@
       </div>
       <div class="col-lg-12">
         <div class="owl-courses-item owl-carousel">
+          {% if clients %}
+          {% for client in clients %}
           <div class="item">
-            <img src="assets/images/branding.jpg" alt="Course One">
+            <img style="object-fit: cover !important; height: 127px !important;" src="{{ client.image.url }}"
+              alt="{{ client.client_name }}">
             <div class="down-content">
-              <h4>Client Name</h4>
-              <div class="info">
+              <h4>{{client.client_name}}</h4>
+              <!-- <div class="info">
                 <div class="row">
                   <div class="col-8">
                     <ul>
@@ -257,251 +205,11 @@
 
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
-          <div class="item">
-            <img src="assets/images/branding.jpg" alt="Course One">
-            <div class="down-content">
-              <h4>Client Name</h4>
-              <div class="info">
-                <div class="row">
-                  <div class="col-8">
-                    <ul>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                    </ul>
-                  </div>
-                  <div class="col-4">
-
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <img src="assets/images/branding.jpg" alt="Course One">
-            <div class="down-content">
-              <h4>Client Name</h4>
-              <div class="info">
-                <div class="row">
-                  <div class="col-8">
-                    <ul>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                    </ul>
-                  </div>
-                  <div class="col-4">
-
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <img src="assets/images/branding.jpg" alt="Course One">
-            <div class="down-content">
-              <h4>Client Name</h4>
-              <div class="info">
-                <div class="row">
-                  <div class="col-8">
-                    <ul>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                    </ul>
-                  </div>
-                  <div class="col-4">
-
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <img src="assets/images/branding.jpg" alt="Course One">
-            <div class="down-content">
-              <h4>Client Name</h4>
-              <div class="info">
-                <div class="row">
-                  <div class="col-8">
-                    <ul>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                    </ul>
-                  </div>
-                  <div class="col-4">
-
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <img src="assets/images/branding.jpg" alt="Course One">
-            <div class="down-content">
-              <h4>Client Name</h4>
-              <div class="info">
-                <div class="row">
-                  <div class="col-8">
-                    <ul>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                    </ul>
-                  </div>
-                  <div class="col-4">
-
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <img src="assets/images/branding.jpg" alt="Course One">
-            <div class="down-content">
-              <h4>Client Name</h4>
-              <div class="info">
-                <div class="row">
-                  <div class="col-8">
-                    <ul>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                    </ul>
-                  </div>
-                  <div class="col-4">
-
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <img src="assets/images/branding.jpg" alt="Course One">
-            <div class="down-content">
-              <h4>Client Name</h4>
-              <div class="info">
-                <div class="row">
-                  <div class="col-8">
-                    <ul>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                    </ul>
-                  </div>
-                  <div class="col-4">
-
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <img src="assets/images/branding.jpg" alt="Course One">
-            <div class="down-content">
-              <h4>Client Name</h4>
-              <div class="info">
-                <div class="row">
-                  <div class="col-8">
-                    <ul>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                    </ul>
-                  </div>
-                  <div class="col-4">
-
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <img src="assets/images/branding.jpg" alt="Course One">
-            <div class="down-content">
-              <h4>Client Name</h4>
-              <div class="info">
-                <div class="row">
-                  <div class="col-8">
-                    <ul>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                    </ul>
-                  </div>
-                  <div class="col-4">
-
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <img src="assets/images/branding.jpg" alt="Course One">
-            <div class="down-content">
-              <h4>Client Name</h4>
-              <div class="info">
-                <div class="row">
-                  <div class="col-8">
-                    <ul>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                    </ul>
-                  </div>
-                  <div class="col-4">
-
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <img src="assets/images/branding.jpg" alt="Course One">
-            <div class="down-content">
-              <h4>Client Name</h4>
-              <div class="info">
-                <div class="row">
-                  <div class="col-8">
-                    <ul>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                    </ul>
-                  </div>
-                  <div class="col-4">
-
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          {% endfor %}
+          {% endif %}
         </div>
       </div>
     </div>
@@ -569,7 +277,8 @@
       <div class="col-lg-9 align-self-center">
         <div class="row">
           <div class="col-lg-12">
-            <form id="contact" action="" method="post">
+            <form id="contact" method="post">
+              {% csrf_token %}
               <div class="row">
                 <div class="col-lg-12">
                   <h2>Let's get in touch</h2>

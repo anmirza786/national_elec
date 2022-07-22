@@ -4,34 +4,7 @@
 
 {% block content %}
 
-<header class="header-area header-sticky">
-  <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <nav class="main-nav">
-          <!-- ***** Logo Start ***** -->
-          <a href="{% url 'frontpage' %}" class="logo">
-            <img src="{% static 'assets/images/logo.png' %}" width="100" height="80">
-          </a>
-          <!-- ***** Logo End ***** -->
-          <!-- ***** Menu Start ***** -->
-          <ul class="nav">
-            <li><a href="{% url 'frontpage' %}">Home</a></li>
-            <li><a href="{% url 'products' %}">Products</a></li>
 
-
-            <li><a href="index.html">Contact Us</a></li>
-          </ul>
-          <a class='menu-trigger'>
-            <span>Menu</span>
-          </a>
-          <!-- ***** Menu End ***** -->
-        </nav>
-      </div>
-    </div>
-  </div>
-
-</header>
 
 <section class="upcoming-meetings" id="meetings-sig" style="padding-bottom: 0px !important; padding-top: 150px;">
   <div class="container">
@@ -43,15 +16,14 @@
       </div>
       <div class="col-lg-4">
         <div class="categories">
-          <h4>Products Catgories</h4>
           <ul>
 
             <li><a href="{% url 'profile' %}">Profile Details</a></li><br>
-            <li><a href="#">Varify Orders</a></li><br>
+            <li><a href="{% url 'varify-order' %}">Varify Orders</a></li><br>
             <li><a href="{% url 'total-orders' %}" style="color: #a12c2f;">Total Orders</a></li><br>
-            <li><a href="#">Varified Orders</a></li><br>
-            <li><a href="#">Not Varified Orders</a></li><br>
-            <li><a href="#">Delivered Orders</a></li><br>
+            <li><a href="{% url 'varified-orders' %}">Varified Orders</a></li><br>
+            <li><a href="{% url 'notvarified-orders' %}">Not Varified Orders</a></li><br>
+            <li><a href="{% url 'delivered-orders' %}">Delivered Orders</a></li><br>
           </ul>
           <div class="main-button-red">
             <a href="{% url 'products' %}"><i class="fa-solid fa-arrow-left"></i> Products</a>
@@ -63,10 +35,53 @@
           <h4>Username: {{request.user.buyer}}</h4>
           {% if order %}
           {% for order in order %}
-          Order #: {{order.id}}
+          Order #: {{order.order.id}}
+
           <br>
-          Order Status: {{order.order_status}}
+          {% if order.order.order_status == 2 %}
+          Order Status: <span class="badge" style="background-color: #CC0000;"><i class="fa-solid fa-xmark"></i> Not
+            Varified</span>
+          {% elif order.order.order_status == 1 %}
+          Order Status: <span class="badge" style="background-color: #007E33;"><i class="fa-solid fa-check"></i>
+            Varified</span> <span class="badge" style="background-color: gray;">
+            <i class="fa-solid fa-xmark"></i> Not Delivered</span>
+
+          {% elif order.order.order_status == 3 %}
+          Order Status: <span class="badge" style="background-color: #0099CC;">
+            <i class="fa-solid fa-check"></i> Delivered</span>
+          {% endif %}
           <br>
+          <button
+            onclick="myFunction('showproducts{{order.id}}','mybtn{{order.id}}','arrow{{order.id}}','arrow2{{order.id}}')"
+            style="color: red; cursor: pointer;background: none;border: none;" id="mybtn{{order.id}}">Show Orderd
+            Products
+            <i class="fa-solid fa-chevron-down" id="arrow{{order.id}}"></i><i class="fa-solid fa-chevron-up"
+              id="arrow2{{order.id}}" style="display: none;"></i>
+          </button>
+          <div class="box-element" style="display: none;" id="showproducts{{order.id}}">
+            <div class="row">
+              <div style="flex: 2"></div>
+              <div style="flex: 2"><strong>Item</strong></div>
+              <div style="flex: 1"><strong>Price</strong></div>
+              <div style="flex: 1"><strong>Quantity</strong></div>
+              <div style="flex: 1"><strong>Total</strong></div>
+
+            </div>
+            <div class="row" style="justify-content: center; align-items: center;">
+              <div style="flex: 2">
+                <img style="width: 100px;" class="row-image" src="{{ order.product.get_thumbnail }}" />
+              </div>
+              <div style="flex: 2">{{ order.product.title }}</div>
+              <div style="flex: 1">${{ order.product.price }}</div>
+              <div style="flex: 1; justify-content: center; align-items: center">
+                <div class="quantity">
+                  <div class="quantity">{{ order.quantity }}</div>
+                </div>
+              </div>
+              <div style="flex: 1">Rs.{{ order.price }}</div>
+
+            </div>
+          </div>
           <hr>
           {% endfor %}
           {% else %}
@@ -81,4 +96,24 @@
 
   </div>
 </section>
+{% endblock %}
+{% block scripts %}
+<script>
+  function myFunction(sp, btn, a1, a2) {
+    var showproducts = document.getElementById(sp);
+    var btnText = document.getElementById(btn);
+    var arrow = document.getElementById(a1);
+    var arrow2 = document.getElementById(a2);
+    console.log(showproducts, btnText, arrow, arrow2)
+    if (arrow.style.display === "none") {
+      arrow.style.display = "inline";
+      arrow2.style.display = "none";
+      showproducts.style.display = "none";
+    } else {
+      arrow.style.display = "none";
+      arrow2.style.display = "inline";
+      showproducts.style.display = "block";
+    }
+  }
+</script>
 {% endblock %}

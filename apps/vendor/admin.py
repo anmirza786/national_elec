@@ -7,4 +7,4 @@ class VendorAdmin(admin.ModelAdmin):
     list_display = ('name', 'created_by', 'created_at')
 
 
-admin.site.register(Vendor,VendorAdmin)
+# admin.site.register(Vendor,VendorAdmin)

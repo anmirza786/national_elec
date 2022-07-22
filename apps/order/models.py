@@ -15,7 +15,7 @@ class Order(models.Model):
     order_status = models.SmallIntegerField(choices=OrderStatusEnum.choices,default=OrderStatusEnum.NOTVARIFIED)
     created_at = models.DateTimeField(auto_now_add=True)
     paid_amount = models.DecimalField(max_digits=8, decimal_places=2)
-    paid_slip = models.FileField(upload_to='slips/',blank=True)
+    paid_slip = models.FileField(blank=True)
     # vendors = models.ManyToManyField(Vendor, related_name='orders')
 
     class Meta:
