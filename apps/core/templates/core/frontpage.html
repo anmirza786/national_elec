@@ -98,7 +98,7 @@
                 <div class="date">
 
                 </div>
-                <a href="Products-details.html">
+                <a href="{% url 'product' product.category.slug product.slug %}">
                   <h4>{{ product.title }}</h4>
                 </a>
 
