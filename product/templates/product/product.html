@@ -1,0 +1,170 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}{{ product.title }} | {% endblock %}
+
+{% block content %}
+<!-- ***** Header Area Start ***** -->
+<header class="header-area header-sticky">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+                    <!-- ***** Logo Start ***** -->
+                    <a href="{% url 'frontpage' %}" class="logo">
+                        <img src="{% static 'assets/images/logo.png' %}" width="100" height="80">
+                    </a>
+                    <!-- ***** Logo End ***** -->
+                    <!-- ***** Menu Start ***** -->
+
+                    <ul class="nav">
+                        <li class="scroll-to-section"><a href="{% url 'frontpage' %}">Home</a></li>
+                        <li><a href="{% url 'products' %}">Products</a></li>
+
+                        {% if request.user.is_authenticated %}
+                        <li><a href="{% url 'profile' %}"><i class="fa-solid fa-user"></i></a></li>
+                        <li><a href="{% url 'cart' %}"><i class="fa-solid fa-cart-shopping"></i>
+                                <span class="badge badge-light"
+                                    style="padding: 3px; margin: 0;background-color: white; color: black; top: 0">
+                                    {{ cart|length }}</span></a></li>
+                        <li>
+                            <a href="{% url 'logout' %}" class="btn btn-secondary"
+                                style="padding: 0px 20px;margin: 0; color:white">Log out</a>
+                        </li>
+                        {% endif %}
+                        {% if not request.user.is_authenticated %}
+                        <li><a href="{% url 'login' %}" class="navbar-item">Login</a></li>
+                        {% endif %}
+                    </ul>
+                    <a class='menu-trigger'>
+                        <span>Menu</span>
+                    </a>
+                    <!-- ***** Menu End ***** -->
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- ***** Header Area End ***** -->
+
+<section class="heading-page header-text" id="top">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>{{product.title}}</h2>
+                <h6 style="margin: 0 20px !important;">{{product.category.title}}</h6>
+                <h6 style="margin: 0 20px !important;">Rs.{{product.price}}</h6>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="meetings-page" id="meetings" style="padding-top: 20px !important;">
+    <div id="productapp" class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box-element">
+
+                    {% if product.image %}
+                    <figure class="image is-2by1 mb-6">
+                        <img :src="mainImage.image" style="max-height: 60vh; object-fit: contain;">
+                    </figure>
+                    {% endif %}
+
+                    {% if product.images.all %}
+                    <hr>
+                    <div class="row product_subdiv">
+                        <div class="col-sm-6" v-for="image in images" v-bind:key="image.id" style="padding: 20px;">
+                            <img :src="image.thumbnail" @click="changeMainImage(image)"
+                                style="height: 100%;margin-left: 10px; margin-right: 10px; width: 100px; cursor: pointer;">
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div style="display: flex; flex-wrap: wrap; flex-direction: column; justify-content: space-evenly;">
+                    <h3 class="title" style="color: white; padding: 10px 0px;"><b>Product Name: </b>{{ product.title}}
+                    </h3>
+                    <h3 style="color: white; padding: 10px 0px;"><b>Price: </b>Rs.{{ product.price }}</h3>
+                    <h3 style="color: white; padding: 10px 0px;"><b>Description: </b>{{ product.description }}</h3>
+                </div>
+
+
+                <hr>
+
+                {% if messages %}
+                {% for message in messages %}
+                <div class="notification is-success is-toast" style="color: white;">{{ message }}</div>
+                {% endfor %}
+                {% endif %}
+                {% if request.user.is_authenticated %}
+                {% if request.user.buyer %}
+                <form method="post" action=".">
+                    {% csrf_token %}
+
+                    <div class="form-field" style="width: 160px !important;">
+                        <label for="quantity" style="color: white; padding-bottom: 5px;">Quantity</label>
+                        <input id="quantity" type="number" name="quantity" value="1" class="form-control" min="1">
+
+                        <button class="btn btn-primary" style="margin-top: 10px;">Add to cart</button>
+                    </div>
+                </form>
+                {% endif %}
+                {% else %}
+                <form method="post" style="width: 160px !important;">
+                    {% csrf_token %}
+                    <label for="quantity" style="color: white; padding-bottom: 5px;">Quantity</label>
+                    <input id="quantity" type="number" name="quantity" value="1" class="form-control" min="1">
+                    <button class="btn btn-primary" style="margin-top: 10px;">Add to cart</button>
+
+                </form>
+                {% endif %}
+                <!-- {% if similar_products %}
+                <hr>
+
+                <div class="columns is-multiline">
+                    <div class="column is-12">
+                        <h2 class="subtitle" style="color: white;">Similar products</h2>
+                    </div>
+
+                    <div class="row">
+                        {% for product in similar_products %}
+                        {% include 'product/parts/list_item.html' %}
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %} -->
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <p>Copyright © 2022 StarSOft.com.pk
+
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+{{ imagesstring|json_script:"json-imagesstring" }}
+<script src="https://unpkg.com/vue@next"></script>
+<script>
+    const ProductApp = {
+        data() {
+            return {
+                mainImage: '',
+                images: []
+            }
+        },
+        mounted() {
+            this.images = JSON.parse(JSON.parse(document.getElementById("json-imagesstring").textContent))
+            this.mainImage = this.images[0]
+        },
+        methods: {
+            changeMainImage(image) {
+                this.mainImage = image
+            }
+        }
+    }
+
+    Vue.createApp(ProductApp).mount('#productapp')
+    console.log(ProductApp)
+</script>
+{% endblock %}

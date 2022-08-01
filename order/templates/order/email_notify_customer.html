@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <title>Interiorshop</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+  </head>
+  <style>
+    html {
+      width: 100%;
+    }
+
+    element.style {
+    }
+    @media (min-width: 576px) .container, .container-sm {
+      max-width: 540px;
+    }
+    @media (min-width: 576px) .container {
+      max-width: 540px;
+    }
+    .container {
+      width: 100%;
+      padding-right: 15px;
+      padding-left: 15px;
+      margin-right: auto;
+      margin-left: auto;
+    }
+    .table-dark {
+      color: #fff;
+      background-color: #343a40;
+    }
+
+    .table {
+      width: 100%;
+      margin-bottom: 1rem;
+      color: white;
+    }
+
+    body {
+      width: 100%;
+      font-family: Arial;
+      font-size: 14px;
+      background-color: #454d55;
+      color: white;
+      padding: 50px;
+      text-align: center;
+    }
+  </style>
+
+  <body class="container">
+    <img
+      src="https://nel.com.pk/static/assets/images/logo.png"
+      alt=""
+      style="width: 100px"
+    />
+    <h4>National Electronics</h4>
+    <hr style="border-color: white" />
+    <h1>Order confirmation</h1>
+    <h3>Cuatomer Details</h3>
+    <table
+      width="100%"
+      cellspacing="0"
+      cellpadding="0"
+      class="table table-dark"
+    >
+      <tr>
+        <th scope="row">Name:</th>
+        <th scope="row">{{ order.buyer.complete_name }}</th>
+      </tr>
+      <tr>
+        <th scope="row">Address:</th>
+        <th scope="row">{{ order.buyer.address }}</th>
+      </tr>
+      <tr>
+        <th scope="row">City:</th>
+        <th scope="row">{{ order.buyer.city }}</th>
+      </tr>
+      <tr>
+        <th scope="row">Email Address:</th>
+        <th scope="row">{{ order.buyer.email }}</th>
+      </tr>
+      <tr>
+        <th scope="row">Phone:</th>
+        <th scope="row">{{ order.buyer.phone }}</th>
+      </tr>
+    </table>
+    <h3>Products</h3>
+    <table class="table table-dark">
+      <thead>
+        <tr>
+          <th scope="col">Product</th>
+          <th scope="col">Price</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in order.orderitems.all %}
+        <tr>
+          <td>{{ item.product.title }}</td>
+          <td>Rs. {{ item.product.price }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>Rs.{{ item.get_total_price }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <hr style="border-color: white" />
+    <a
+      href="https://nel.com.pk/"
+      class="btn btn-danger"
+      style="border-radius: 20px; background-color: "
+      >Continue Shoping</a
+    >
+  </body>
+</html>

@@ -44,10 +44,18 @@ CART_SESSION_ID = 'cart'
 # EMAIL_HOST_USER='anmirza68@gmail.com'
 # EMAIL_HOST_PASSWORD = 'Ahmadmirza@123'
 # DEFAULT_FROM_EMAIL = 'anmirza68@gmail.com'
-EMAIL_HOST = 'smtp.mailtrap.io'
-EMAIL_HOST_USER = 'ca62f5ec17dcb4'
-EMAIL_HOST_PASSWORD = '504651e4dbe3c1'
-EMAIL_PORT = '2525'
+# EMAIL_HOST = 'smtp.mailtrap.io'
+# EMAIL_HOST_USER = 'ca62f5ec17dcb4'
+# EMAIL_HOST_PASSWORD = '504651e4dbe3c1'
+# EMAIL_PORT = '2525'
+
+EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'nel.com.pk'  #Hosted on namecheap Ex: mail.pure.com
+# EMAIL_USE_TLS = True
+EMAIL_PORT = 26 # I use this for SSL
+EMAIL_HOST_USER = 'noreply@nel.com.pk' # Ex: info@pure.com
+DEFAULT_FROM_EMAIL = 'noreply@nel.com.pk'
+EMAIL_HOST_PASSWORD = 'nationalelectronics@123' 
 # Application definition
 
 INSTALLED_APPS = [
@@ -57,12 +65,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.cart',
-    'apps.core',
-    'apps.order',
-    'apps.product',
-    'apps.vendor',
-    'apps.buyer',
+    'cart',
+    'core',
+    'order',
+    'product',
+    'vendor',
+    'buyer',
     'widget_tweaks'
 ]
 
@@ -89,8 +97,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'apps.product.context_processors.menu_categories',
-                'apps.cart.context_processors.cart'
+                'product.context_processors.menu_categories',
+                'cart.context_processors.cart'
             ],
         },
     },

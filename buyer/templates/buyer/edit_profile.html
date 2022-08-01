@@ -1,0 +1,37 @@
+{% extends 'core/base.html' %} {% block title %}Edit Profile | {% endblock %} {% block content %}
+<h1 class="title">Edit Profile</h1>
+<div class="row">
+  <div class="col-lg-6">
+    <div class="box-element">
+      <form method="post" action=".">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label>Username</label>
+          <input
+            type="text"
+            name="name"
+            id="id_name"
+            value="{{ buyer.name }}"
+            class="form-control"
+          />
+          <div id="emailHelp" class="form-text">
+            This is not the same as the username!
+          </div>
+        </div>
+        <div class="mb-3">
+          <label>E-mail</label>
+          <input
+            type="email"
+            name="email"
+            id="id_email"
+            value="{{ buyer.created_by.email }}"
+            class="form-control"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
