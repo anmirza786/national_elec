@@ -40,8 +40,8 @@
             <div class="icon">
               <img src="{{ product.image.url }}" alt="">
             </div>
-            <div class="down-content">
-              <h4>{{ product.title }}</h4>
+            <div class="down-content" style="color: white ;">
+              <h4 style="color: white;">{{ product.title }}</h4>
               <p>{{ product.category.title }}</p>
             </div>
           </div>
@@ -65,7 +65,9 @@
           <h4>Products Catgories</h4>
           <ul>
             {% for category in categories %}
+            {% if category.catlevel == 1 %}
             <li><a href="{% url 'category' category.slug %}" class="dropdown-item">{{ category.title }}</a></li><br>
+            {% endif %}
             {% endfor %}
             <!-- 
             <li><a href="#">Electric Sockets</a></li><br>
@@ -339,7 +341,7 @@
       </div>
     </div>
   </div>
-  <div class="footer">
+  <div class="footer" style="background: transparent;">
     <p>Copyright © 2022 StarSOft.com.pk
 
   </div>

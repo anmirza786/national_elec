@@ -19,7 +19,7 @@
 <br>
 <div class="box-element">
     <h2 class="is-size-3 mb-4">My products</h2>
-    <a href="{% url 'add_product' %}" class="btn btn-primary"
+    <a href="{% url 'add_product' %}" class="btn btn-mail-primary"
       >Add product</a
     >
     <hr>
@@ -38,7 +38,7 @@
           >
         </div style="flex: 2">
         <div style="flex: 1">${{ product.price }}</div >
-        <div style="flex: 1"><a href="{% url 'edit_product' product.id %}" class="btn btn-primary">Edit</a></div >
+        <div style="flex: 1"><a href="{% url 'edit_product' product.id %}" class="btn btn-mail-primary">Edit</a></div >
       </div>
       {% endfor %}
   {% else %}

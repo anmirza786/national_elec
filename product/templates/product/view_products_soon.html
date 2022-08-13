@@ -26,16 +26,37 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="row" id="products-list">
-                    <div class="col-lg-12">
-                        <div class="filters">
-                            <div>
-                                <a href="{% url 'products' %}">All Products</a>
-                                <a class="active" href="{% url 'soon' %}">Soon</a>
-                                <a href="{% url 'available' %}">Available</a>
-                                <a href="{% url 'stock' %}">out of stock</a>
-                            </div>
-                        </div>
-                    </div>
+                    <hr style="background: white;" />
+          <h5 style="color: white;text-align: center;padding: 10px;padding-top:0px;">
+            Categories
+          </h5>
+          <hr style="background: white;" />
+          <div class="col-lg-12">
+            <div class="filters" style="margin-bottom: 20px !important;">
+              <div>
+                {% for category in categories %}
+                {% if category.catlevel == 1 %}
+                <a href="{% url 'category' category.slug %}">{{category.title}}</a>
+                {% endif %}
+                {% endfor %}
+                
+              </div>
+            </div>
+          </div>
+          <hr style="background: white;" />
+          <h5 style="color: white;text-align: center;padding: 10px;padding-top:0px;">Product Status</h5>
+          <hr style="background: white;" />
+          <div class="col-lg-12">
+            <div class="filters" style="margin-bottom: 20px !important;">
+              <div>
+                <a class="{% if request.resolver_match.url_name == 'products' %} active {% endif %}" href="{% url 'products' %}">All Products</a>
+                <a class="{% if request.resolver_match.url_name == 'soon' %} active {% endif %}" href="{% url 'soon' %}">Soon</a>
+                <a class="{% if request.resolver_match.url_name == 'available' %} active {% endif %}" href="{% url 'available' %}">Available</a>
+                <a class="{% if request.resolver_match.url_name == 'stock' %} active {% endif %}" href="{% url 'stock' %}">out of stock</a>
+              </div>
+            </div>
+          </div>
+          <hr style="background: white;" />
                     <div class="col-lg-12">
                         <div class="row grid">
                             {% for product in page_obj %}
@@ -74,7 +95,7 @@
             </div>
         </div>
     </div>
-    <div class="footer">
+    <div class="footer" style="background: transparent;">
         <p>Copyright © 2022 StarSOft.com.pk
 
     </div>

@@ -23,6 +23,9 @@
   <link rel="stylesheet" href="{% static 'assets/css/templatemo-edu-meeting.css' %}">
   <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
   <link rel="stylesheet" href="{% static 'assets/css/lightbox.css' %}">
+  <link rel="stylesheet" href="{% static 'newassets/css/style.min.css' %}">
+  <link rel="stylesheet" href="{% static 'newassets/vendor/animate/animate.min.css' %}">
+  <link rel="stylesheet" href="{% static 'newassets/vendor/fontawesome-free/css/all.min.css' %}">
   <!--
 
 TemplateMo 569 Edu Meeting
@@ -56,24 +59,24 @@ https://templatemo.com/tm-569-edu-meeting
     margin: 5px 5px;
   }
 
-  .btn-primary {
-    color: #a12c2f;
+  .btn-mail-primary {
+    color: #dc5126;
     background-color: #fff;
   }
 
-  .btn-secondary {
-    background-color: #a12c2f;
+  .btn-mail-secondary {
+    background-color: #dc5126;
     color: #fff;
   }
 
-  .btn-primary:hover {
-    background-color: #a12c2f;
+  .btn-mail-primary:hover {
+    background-color: #8b3217;
     color: #fff;
   }
 
-  .btn-secondary:hover {
-    color: #a12c2f !important;
-    background-color: #fff;
+  .btn-mail-secondary:hover {
+    color: #fff !important;
+    background-color: #8b3217;
   }
 
   .header-area .main-nav .nav-noncollapsable {
@@ -126,76 +129,310 @@ https://templatemo.com/tm-569-edu-meeting
   .box-element a:hover {
     color: #f5a425;
   }
+  @media (max-width: 767px){
+.header-area .main-nav .nav li .btn {
+    height: 50px !important;
+    line-height: 50px !important;
+    
+    padding: 0px !important;
+    border: none !important;
+    background: #dc5126 !important;
+    color: #191a20 !important;
+}
+}
+@media (min-width: 767px){
+.header-area .main-nav .nav li #icon{
+  color: white !important;
+  transition: all 2s;
+}
+.background-header .main-nav .nav li #icon{
+  color: black !important;
+  transition: all 2s;
+}
+#search-input{
+  display:none;
+  transition: all 2s ease-in;
+}
+}
+@media (max-width: 767px){
+  .header-area .main-nav .nav li #icon{
+    display: none;
+  }
+  .background-header .main-nav .nav li #icon{
+    display: none;
+    
+  }
+  #search-input{
+    display:flex;
+    transition: all 2s ease-in;
+  }
+  .header-area .main-nav .nav li {
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    width: 100%;
+  }
+  .background-header .main-nav .nav li {
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    width: 100%;
+  }
+  #logout{
+    width: 200px;
+  }
+}
 </style>
 
-<body>
-  <div class="sub-header">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-sm-8">
-          <div class="left-content">
+<body class="loaded" id="body">
+  <div class="page-wrapper">
+    <header class="header">
+        <div class="header-top" style="height: 35px;">
+            <div class="container">
+                <div class="header-left">
+                    <a href="{% url 'frontpage' %}#contact" style="padding: 0 5px;">Contact Us</a>
+                    <span class="divider d-lg-show"></span>
+                    <a href="" style="padding: 0 5px;"><i class="w-icon-facebook"></i></a>
+                    <a href="" style="padding: 0 5px;"><i class="w-icon-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <!-- End of Header Top -->
 
-          </div>
+        <div class="header-middle" style="background: #1F262C; color: white;">
+            <div class="container">
+                <div class="header-left mr-md-4">
+                    <a href="#" onclick="showNav()" class="mobile-menu-toggle  w-icon-hamburger"
+                        aria-label="menu-toggle">
+                    </a>
+                    <a href="{% url 'frontpage' %}" class="logo ml-lg-0">
+                        <img src="{% static 'assets/images/logo.png' %}" alt="logo" style="width: 60px;" height="45" />
+                    </a>
+                    <form method="get" action="{% url 'search' %}"
+                        class="header-search hs-expanded hs-round d-none d-md-flex input-wrapper">
+
+                        <input type="text" class="form-control" name="search" id="search" placeholder="Search in..."
+                            required style="border-left: 2px solid white; background: transparent !important; color: white;" />
+                        <button class="btn btn-search" type="submit" style="background: transparent;color: white;border: 2px solid white;border-left: none;"><i class="w-icon-search"></i>
+                        </button>
+                    </form>
+                </div>
+                <div class="header-right ml-4">
+                    {% if request.user.is_authenticated %}
+                    <a class="compare label-down link d-xs-show" href="{% url 'profile' %}">
+                        <i class="w-icon-account"></i>
+                        <span class="compare-label d-lg-show">My Account</span>
+                    </a>
+                    <a class="compare label-down link d-xs-show" href="{% url 'logout' %}">
+                        <i class="w-icon-logout"></i>
+                        <span class="compare-label d-lg-show">Logout</span>
+                    </a>
+                    {% else %}
+                    <a class="compare label-down link d-xs-show" href="{% url 'login' %}">
+                        <i class="w-icon-account"></i>
+                        <span class="compare-label d-lg-show">Login/Register</span>
+                    </a>
+                    {% endif %}
+                    <div class="dropdown cart-dropdown cart-offcanvas mr-0 mr-lg-2">
+                        
+                        <a href="{% url 'cart' %}" class="cart-toggle label-down link" style="color: white:">
+                            <i class="w-icon-cart" style="color: white !important;">
+                                <span class="cart-count">{{cart|length}}</span>
+                            </i>
+                            <span class="cart-label" style="color: white !important;">Cart</span>
+                        </a>
+                        <!-- End of Dropdown Box -->
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-lg-4 col-sm-4">
-          <div class="right-icons">
-            <ul>
-              <li><a target="_blank|_self|_parent|_top" href="https://www.facebook.com/NationalElectricLights/"><i
-                    class="fa fa-facebook"></i></a></li>
-            </ul>
-          </div>
+        <!-- End of Header Middle -->
+
+        <div class="header-bottom sticky-content fix-top sticky-header has-dropdown" style="background: #1F262C; color: white;">
+            <div class="container">
+                <div class="inner-wrap">
+                    <div class="header-left">
+                        <div class="dropdown category-dropdown has-border" data-visible="true">
+                            <a href="#" class="category-toggle text-dark" role="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="true" data-display="static"
+                                title="Browse Categories">
+                                <i class="w-icon-category"></i>
+                                <span>Browse Categories</span>
+                            </a>
+
+                            <div class="dropdown-box">
+                                <ul class="menu vertical-menu category-menu">
+                                    {% for category in categories %}
+                                    {% if category.catlevel == 1 %}
+                                    <li class="has-submenu">
+                                        <a href="{% url 'category' category.slug %}" href="shop-fullwidth-banner.html">
+                                            {{category.title}}
+                                        </a>
+                                        <ul class="submenu"
+                                        style="top: 0;padding:0;"
+                                        >
+                                            {% for cat in categories %}
+                                            {% if cat.parent.id == category.id %}
+                                            <li style="padding: 13px 10px">
+                                                <a href="{% url 'category' cat.slug %}" style='padding: 0'> {{cat.title}} </a>
+                                            </li>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                        {% comment %} {% for cat in categories %}
+                                        {% if cat.catlevel == 2 %}
+                                        {% if cat.parent.id == category.id %}
+                                        {% else %}
+                                            <li>
+                                                <a href="shop-fullwidth-banner.html">
+                                                    <i class="w-icon-gift"></i>Gift Ideas
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        {% endif %}
+                                        {% endfor %} {% endcomment %}
+                                    {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <nav class="main-nav">
+                            <ul class="menu active-underline">
+                                <li>
+                                    <a href="{% url 'frontpage' %}">Home</a>
+                                </li>
+                                {% if request.user.is_authenticated %}
+                    
+                                <li>
+                                    <a  href="{% url 'profile' %}">
+                                        <i class="w-icon-account"></i>My Account
+                                    </a>
+                                </li>
+                                {% else %}
+                                <li>
+                                    <a href="{% url 'login' %}">
+                                        <i class="w-icon-account"></i>
+                                     Login/Register
+                                    </a>
+                                </li>
+                                {% endif %}
+                                <li>
+                                    <a href="{% url 'products' %}">All Products</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
+    </header>
   </div>
-  <header class="header-area header-sticky">
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <nav class="main-nav">
-            <!-- ***** Logo Start ***** -->
-            <a href="{% url 'frontpage' %}" class="logo">
-              <img src="{% static 'assets/images/logo.png' %}" width="100" height="80">
-            </a>
-            <!-- ***** Logo End ***** -->
-            <!-- ***** Menu Start ***** -->
-
-            <ul class="nav">
-              <li><a href="{% url 'frontpage' %}">Home</a></li>
-              <li><a href="{% url 'products' %}">Products</a></li>
-
-              {% if request.user.is_authenticated %}
-              <li><a href="{% url 'profile' %}"><i class="fa-solid fa-user"></i></a></li>
-              <li><a href="{% url 'cart' %}"><i class="fa-solid fa-cart-shopping"></i>
-                  <span class="badge badge-light"
-                    style="padding: 3px; margin: 0;background-color: white; color: black; top: 0">
-                    {{ cart|length }}</span></a></li>
-              <li>
-                <a href="{% url 'logout' %}" class="btn btn-secondary"
-                  style="padding: 0px 20px;margin: 0; color:white !important">Log out</a>
-              </li>
-              {% endif %}
-              {% if not request.user.is_authenticated %}
-              <li><a href="{% url 'login' %}" class="navbar-item">Login</a></li>
-              {% endif %}
-            </ul>
-            <a class='menu-trigger'>
-              <span>Menu</span>
-            </a>
-            <!-- ***** Menu End ***** -->
-          </nav>
-        </div>
-      </div>
-    </div>
-  </header>
   {% block content %}
   {% endblock %}
   {% block scripts %}
   {% endblock %}
+  <div class="mobile-menu-wrapper">
+    <div class="mobile-menu-overlay" onclick="showNav()"></div>
+    <!-- End of .mobile-menu-overlay -->
 
+    <a href="#" class="mobile-menu-close" onclick="showNav()"><i class="close-icon"></i></a>
+    <!-- End of .mobile-menu-close -->
+
+    <div class="mobile-menu-container scrollable">
+        <form action="#" method="get" class="input-wrapper">
+            <input type="text" class="form-control" name="search" autocomplete="off" placeholder="Search"
+                required />
+            <button class="btn btn-search" type="submit" style="margin: 0;">
+                <i class="w-icon-search"></i>
+            </button>
+        </form>
+        <!-- End of Search Form -->
+        <div class="tab">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a href="#main-menu" class="nav-link active">Main Menu</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#categories" class="nav-link">Categories</a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content">
+            <div class="tab-pane active" id="main-menu">
+                <ul class="mobile-menu">
+                    <li>
+                        <a href="{% url 'frontpage' %}">Home</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'products' %}">All Products</a>
+                    </li>
+                    {% if request.user.is_authenticated %}
+        
+                    <li>
+                        <a  href="{% url 'profile' %}">
+                            <i class="w-icon-account"></i>My Account
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'logout' %}"><i class="w-icon-logout"></i>
+                            Logout</a>
+                    </li>
+                    {% else %}
+                    <li>
+                        <a href="{% url 'login' %}">
+                            <i class="w-icon-account"></i>
+                         Login/Register
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    
+                </ul>
+            </div>
+            <div class="tab-pane" id="categories">
+                <ul class="mobile-menu">
+                    {% for category in categories %}
+                                    {% if category.catlevel == 1 %}
+                                    <li>
+                                        <a onclick="showSubNav('sub{{category.id}}')">
+                                            {{category.title}}
+                                            <span class="toggle-btn" onclick="showSubNav()"></span>
+                                        </a>
+                                        <ul id="sub{{category.id}}">
+                                            {% for cat in categories %}
+                                            {% if cat.parent.id == category.id %}
+                                            <li style="padding: 13px 10px">
+                                                <a href="{% url 'category' cat.slug %}" style='padding: 0'> {{cat.title}} </a>
+                                            </li>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                        {% comment %} {% for cat in categories %}
+                                        {% if cat.catlevel == 2 %}
+                                        {% if cat.parent.id == category.id %}
+                                        {% else %}
+                                            <li>
+                                                <a href="shop-fullwidth-banner.html">
+                                                    <i class="w-icon-gift"></i>Gift Ideas
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        {% endif %}
+                                        {% endfor %} {% endcomment %}
+                                    {% endif %}
+                                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+  </div>
 
   <!-- Scripts -->
   <!-- Bootstrap core JavaScript -->
+
   <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
   <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
 
@@ -206,6 +443,7 @@ https://templatemo.com/tm-569-edu-meeting
   <script src="{% static 'assets/js/video.js' %}"></script>
   <script src="{% static 'assets/js/slick-slider.js' %}"></script>
   <script src="{% static 'assets/js/custom.js' %}"></script>
+  <script src="{% static 'newassets/js/main.min.js' %}"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"></script>
@@ -215,53 +453,7 @@ https://templatemo.com/tm-569-edu-meeting
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
     integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
     crossorigin="anonymous"></script>
-  <script>
-    //according to loftblog tut
-    $('.nav li:first').addClass('active');
 
-    var showSection = function showSection(section, isAnimate) {
-      var
-        direction = section.replace(/#/, ''),
-        reqSection = $('.section').filter('[data-section="' + direction + '"]'),
-        reqSectionPos = reqSection.offset().top - 0;
-
-      if (isAnimate) {
-        $('body, html').animate({
-          scrollTop: reqSectionPos
-        },
-          800);
-      } else {
-        $('body, html').scrollTop(reqSectionPos);
-      }
-
-    };
-
-    var checkSection = function checkSection() {
-      $('.section').each(function () {
-        var
-          $this = $(this),
-          topEdge = $this.offset().top - 80,
-          bottomEdge = topEdge + $this.height(),
-          wScroll = $(window).scrollTop();
-        if (topEdge < wScroll && bottomEdge > wScroll) {
-          var
-            currentId = $this.data('section'),
-            reqLink = $('a').filter('[href*=\\#' + currentId + ']');
-          reqLink.closest('li').addClass('active').
-            siblings().removeClass('active');
-        }
-      });
-    };
-
-    $('.main-menu, .responsive-menu, .scroll-to-section').on('click', 'a', function (e) {
-      e.preventDefault();
-      showSection($(this).attr('href'), true);
-    });
-
-    $(window).scroll(function () {
-      checkSection();
-    });
-  </script>
   <script>
     function myFunction(sp, btn, a1, a2) {
       var showproducts = document.getElementById(sp);
@@ -279,6 +471,31 @@ https://templatemo.com/tm-569-edu-meeting
       }
     }
   </script>
+
+  <script>
+    function showNav() {
+        const body = document.getElementById('body');
+        console.log(body.classList);
+        if (body.classList.value === 'loaded') {
+            body.classList.add('mmenu-active')
+        }
+        else {
+            body.classList.remove('mmenu-active')
+        }
+    }
+</script>
+<script>
+    function showSubNav(id) {
+        const body = document.getElementById(id);
+        console.log(body.style.display);
+        if (body.style.display === "none") {
+            body.style.display = "block"
+        }
+        else {
+            body.style.display = 'none'
+        }
+    }
+</script>
 </body>
 
 </body>

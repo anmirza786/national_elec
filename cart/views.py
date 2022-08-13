@@ -5,6 +5,8 @@ from django.conf import settings
 from django.contrib import messages
 from django.shortcuts import render, redirect
 
+from product.models import Category
+
 from .cart import Cart
 from .forms import CheckoutForm
 
@@ -15,15 +17,28 @@ def cart_detail(request):
     if request.user.is_authenticated:
         cart = Cart(request)
         current_user = request.user.buyer
+        categories = Category.objects.all()
         print(current_user)
 
         if request.method == 'POST':
+            complete_name = request.POST.get('name', '')
+            email = request.POST.get('email', '')
+            phone = request.POST.get('phone', '')
+            address = request.POST.get('address', '')
+            city = request.POST.get('city', '')
+
+            current_user.created_by.email = email
+            current_user.created_by.save()
+
+            current_user.complete_name = complete_name
+            current_user.phone = phone
+            current_user.address = address
+            current_user.city = city
+            current_user.save()
             order = checkout(request, cart.get_total_cost(), current_user)
 
             cart.clear()
-            print(order)
-            notify_customer(order)
-            
+            # notify_customer(order)
 
             return redirect('success')
         else:
@@ -44,8 +59,10 @@ def cart_detail(request):
 
         return redirect('cart')
 
-    return render(request, 'cart/cart.html', {'stripe_pub_key': settings.STRIPE_PUB_KEY})
+    return render(request, 'cart/cart.html', {'categories':categories})
 
 
 def success(request):
-    return render(request, 'cart/success.html')
+    categories = Category.objects.all()
+    
+    return render(request, 'cart/success.html',{'categories':categories})

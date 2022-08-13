@@ -8,6 +8,7 @@ django = "*"
 stripe = "*"
 pillow = "*"
 django-widget-tweaks = "*"
+autopep8 = "*"
 
 [dev-packages]
 autopep8 = "*"

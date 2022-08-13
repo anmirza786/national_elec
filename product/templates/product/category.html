@@ -22,6 +22,26 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
+                {% if category.catlevel == 1 %}
+                <hr style="background: white;" />
+                <h5 style="color: white;text-align: center;padding: 10px;padding-top:0px;">
+                    Categories
+                </h5>
+                <hr style="background: white;" />
+                <div class="col-lg-12">
+                    <div class="filters" style="margin-bottom: 20px !important;">
+                    <div>
+                        {% for category in subcat %}
+                        {% if category.catlevel == 2 %}
+                        <a href="{% url 'category' category.slug %}">{{category.title}}</a>
+                        {% endif %}
+                        {% endfor %}
+                        
+                    </div>
+                    </div>
+                </div>
+                <hr style="background: white;" />
+                {% endif %}
                 <div class="row" id="products-list">
                     <div class="col-lg-12">
                         <div class="row grid">
@@ -61,7 +81,7 @@
             </div>
         </div>
     </div>
-    <div class="footer">
+    <div class="footer" style="background: transparent;">
         <p>Copyright © 2022 StarSOft.com.pk
 
     </div>

@@ -3,31 +3,46 @@
 
 
 {% block content %}
-
-
-
-<section class="upcoming-meetings" id="meetings-sig" style="padding-bottom: 0px !important; padding-top: 150px;">
+<section
+  class="upcoming-meetings header-text"
+  id="meetings-sig"
+  style="padding-bottom: 0px !important; padding-top: 150px"
+>
   <div class="container">
     <div class="row">
       <div class="col-lg-12">
         <div class="section-heading">
-          <h2>Top Running Producct</h2>
+          <h2>Profile</h2>
         </div>
       </div>
       <div class="col-lg-4">
-        <div class="categories">
-          <h4>Products Catgories</h4>
+        <div class="categories"> 
           <ul>
-
-            <li><a href="{% url 'profile' %}" style="color: #a12c2f;">Profile Details</a></li><br>
-            <li><a href="{% url 'varify-order' %}">Varify Orders</a></li><br>
-            <li><a href="{% url 'total-orders' %}">Total Orders</a></li><br>
-            <li><a href="{% url 'varified-orders' %}">Varified Orders</a></li><br>
-            <li><a href="{% url 'notvarified-orders' %}">Not Varified Orders</a></li><br>
-            <li><a href="{% url 'notvarified-orders' %}">Delivered Orders</a></li><br>
+            <li>
+              <a href="{% url 'profile' %}" style="color: #a12c2f"
+                >Profile Details</a
+              >
+            </li>
+            <br />
+            <li><a href="{% url 'varify-order' %}">Varify Orders</a></li>
+            <br />
+            <li><a href="{% url 'total-orders' %}">Total Orders</a></li>
+            <br />
+            <li><a href="{% url 'varified-orders' %}">Varified Orders</a></li>
+            <br />
+            <li>
+              <a href="{% url 'notvarified-orders' %}">Not Varified Orders</a>
+            </li>
+            <br />
+            <li>
+              <a href="{% url 'notvarified-orders' %}">Delivered Orders</a>
+            </li>
+            <br />
           </ul>
           <div class="main-button-red">
-            <a href="{% url 'products' %}"><i class="fa-solid fa-arrow-left"></i> Products</a>
+            <a href="{% url 'products' %}"
+              ><i class="fa-solid fa-arrow-left"></i> Products</a
+            >
           </div>
         </div>
       </div>
@@ -38,35 +53,63 @@
             {% csrf_token %}
             <div class="mb-3">
               <label>Complete Name</label>
-              <input type="text" name="name" id="id_name" value="{{ buyer.complete_name }}" class="form-control" />
+              <input
+                type="text"
+                name="name"
+                id="id_name"
+                value="{{ buyer.complete_name }}"
+                class="form-control"
+              />
             </div>
             <div class="mb-3">
               <label>E-mail</label>
-              <input type="email" name="email" id="id_email" value="{{ buyer.created_by.email }}"
-                class="form-control" />
+              <input
+                type="email"
+                name="email"
+                id="id_email"
+                value="{{ buyer.created_by.email }}"
+                class="form-control"
+              />
             </div>
             <div class="mb-3">
               <label>Phone Number</label>
-              <input type="text" name="phone" id="id_phone" value="{{ buyer.phone }}" class="form-control" />
+              <input
+                type="text"
+                name="phone"
+                id="id_phone"
+                value="{{ buyer.phone }}"
+                class="form-control"
+              />
             </div>
             <div class="mb-3">
               <label>Address</label>
-              <input type="text" name="address" id="id_address" value="{{ buyer.address }}" class="form-control" />
+              <input
+                type="text"
+                name="address"
+                id="id_address"
+                value="{{ buyer.address }}"
+                class="form-control"
+              />
             </div>
             <div class="mb-3">
               <label>City</label>
-              <input type="text" name="city" id="id_city" value="{{ buyer.city }}" class="form-control" />
+              <input
+                type="text"
+                name="city"
+                id="id_city"
+                value="{{ buyer.city }}"
+                class="form-control"
+              />
             </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-mail-primary">Submit</button>
           </form>
         </div>
       </div>
     </div>
   </div>
-  <div class="footer">
-    <p>Copyright © 2022 StarSOft.com.pk
-
+  <div class="footer" style='background: transparent;'>
+    <p>Copyright © 2022 StarSOft.com.pk</p>
   </div>
 </section>
 {% endblock %}

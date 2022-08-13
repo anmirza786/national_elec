@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from buyer.forms import RegisterForm
 
 from order.forms import OrderVarifyForm
+from product.models import Category
 
 # from luckydraw.models import LuckyDraws, Drawables
 from .models import Buyer
@@ -51,8 +52,8 @@ def get_paid_amount(b):
 @login_required
 def profile(request):
     buyer = request.user.buyer
-    ## Editing Profile
-
+    # Editing Profile
+    categories = Category.objects.all()
     if request.method == 'POST':
         complete_name = request.POST.get('name', '')
         email = request.POST.get('email', '')
@@ -70,49 +71,61 @@ def profile(request):
         buyer.save()
 
         return redirect('profile')
-    return render(request, 'buyer/buyer_profile.html', {'buyer': buyer})
+    return render(request, 'buyer/buyer_profile.html', {'buyer': buyer, 'categories': categories})
+
+
 def viewOrders(request):
     buyer = request.user.buyer
     order = OrderItem.objects.filter(buyer=buyer)
     value = get_paid_amount(buyer)
-    return render(request, 'buyer/total-orders.html', {'order': order,'value':value})
+    categories = Category.objects.all()
+    return render(request, 'buyer/total-orders.html', {'order': order, 'value': value, 'categories': categories})
+
 
 def viewOrdersVarified(request):
     buyer = request.user.buyer
     order = OrderItem.objects.filter(buyer=buyer)
     value = get_paid_amount(buyer)
-    return render(request, 'buyer/varified-order.html', {'order': order,'value':value})
+    categories = Category.objects.all()
+    return render(request, 'buyer/varified-order.html', {'order': order, 'value': value, 'categories': categories})
+
 
 def viewOrdersNotVarified(request):
     buyer = request.user.buyer
     order = OrderItem.objects.filter(buyer=buyer)
     value = get_paid_amount(buyer)
-    return render(request, 'buyer/notvarified-order.html', {'order': order,'value':value})
+    return render(request, 'buyer/notvarified-order.html', {'order': order, 'value': value})
+
 
 def viewOrdersDelivered(request):
     buyer = request.user.buyer
     order = OrderItem.objects.filter(buyer=buyer)
     value = get_paid_amount(buyer)
-    return render(request, 'buyer/delivered-order.html', {'order': order,'value':value})
+    categories = Category.objects.all()
+    return render(request, 'buyer/delivered-order.html', {'order': order, 'value': value, 'categories': categories})
+
 
 def viewOrderVarify(request):
     buyer = request.user.buyer
     order = OrderItem.objects.filter(buyer=buyer)
     value = get_paid_amount(buyer)
-    return render(request, 'buyer/varify-orders.html', {'order': order,'value':value})
+    categories = Category.objects.all()
+    return render(request, 'buyer/varify-orders.html', {'order': order, 'value': value, 'categories': categories})
 
-def varifyOrder(request,pk):
+
+def varifyOrder(request, pk):
     # print(pk)
-    order=get_object_or_404(Order,pk=pk)
-    form = OrderVarifyForm(instance=order)
-    if request.method=='POST':
-        slip = request.POST.get('paid_slip', '')
-        order.paid_slip=slip
+    order = get_object_or_404(Order, pk=pk)
+    form = OrderVarifyForm(request.POST, request.FILES, instance=order)
+    if request.method == 'POST':
+        order = form.save()
         order.save()
         # return redirect('varify-order')
     else:
-        form = OrderVarifyForm(instance=order)
-    return render(request, 'buyer/varify.html',{'form':form,'order':order})
+        form = OrderVarifyForm(request.POST, request.FILES, instance=order)
+    categories = Category.objects.all()
+    return render(request, 'buyer/varify.html', {'form': form, 'order': order, 'categories': categories})
+
 
 def send(request):
     from_email = settings.EMAIL_HOST_USER
@@ -126,6 +139,3 @@ def send(request):
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
     msg.attach_alternative(html_content, 'text/html')
     msg.send()
-
-
-
