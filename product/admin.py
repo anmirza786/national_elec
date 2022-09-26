@@ -4,7 +4,7 @@ from pyexpat import model
 from itertools import product
 from django.contrib import admin
 from django.core.files import File
-from .models import Category, Product, ProductImage
+from .models import Category, Product, ProductImage, ProductVarient
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -19,10 +19,18 @@ class ProductImageAdmin(admin.TabularInline):
     min_num = 1
 
 
+class ProductVarientAdmin(admin.TabularInline):
+    model = ProductVarient
+    extra = 1
+    max_num = 5
+    min_num = 1
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     inlines = [
         ProductImageAdmin,
+        ProductVarientAdmin,
     ]
     list_display = ('title', 'category', 'price', 'date_added')
     list_display_links = ('title', )

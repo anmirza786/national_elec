@@ -1,68 +1,117 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        
-        <title>Interiorshop</title>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-        <style type="text/css">
-            html {
-                width: 100%;
-            }
+    <title>Interiorshop</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+  </head>
+  <style>
+    html {
+      width: 100%;
+    }
 
-            body {
-                width: 100%;
-                font-family: Arial;
-                font-size: 14px;
-                background-color: #fff;
-                color: #333;
-            }
-        </style>
-    </head>
+    element.style {
+    }
+    @media (min-width: 576px) .container, .container-sm {
+      max-width: 540px;
+    }
+    @media (min-width: 576px) .container {
+      max-width: 540px;
+    }
+    .container {
+      width: 100%;
+      padding-right: 15px;
+      padding-left: 15px;
+      margin-right: auto;
+      margin-left: auto;
+    }
+    .table-dark {
+      color: #fff;
+      background-color: #343a40;
+    }
 
-    <body>
-        <table width="100%" cellspacing="0" cellpadding="0">
-            <tr>
-                <td><h1>New order</h1></td>
-            </tr>
+    .table {
+      width: 100%;
+      margin-bottom: 1rem;
+      color: white;
+    }
 
-            <tr>
-                <td>
-                    <h3>Details</h3>
+    body {
+      width: 100%;
+      font-family: Arial;
+      font-size: 14px;
+      background-color: #454d55;
+      color: white;
+      padding: 50px;
+      text-align: center;
+    }
+  </style>
 
-                    <b>Name:</b> {{ order.first_name }} {{ order.last_name }}<br>
-                    <b>Address:</b> {{ order.address }}<br>
-                    <b>Zip and place:</b> {{ order.zipcode }} {{ order.place }}<br>
-                    <b>E-mail:</b> {{ order.email }}<br>
-                    <b>Phone:</b> {{ order.phone }}
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <h3>Products</h3>
-
-                    <table width="100%" cellspacing="0" cellpadding="0">
-                        <tr>
-                            <td><b>Product</b></td>
-                            <td><b>Price</b></td>
-                            <td><b>Quantity</b></td>
-                            <td><b>Total</b></td>
-                        </tr>
-                        
-                        {% for item in order.items.all %}
-                            {% if item.vendor == vendor %}
-                                <tr>
-                                    <td>{{ item.product.title }}</td>
-                                    <td>${{ item.product.price }}</td>
-                                    <td>{{ item.quantity }}</td>
-                                    <td>${{ item.get_total_price }}</td>
-                                </tr>
-                            {% endif %}
-                        {% endfor %}
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </body>
+  <body class="container">
+    <img
+      src="https://nel.com.pk/static/assets/images/logo.png"
+      alt=""
+      style="width: 100px"
+    />
+    <h4>National Electric and Lights</h4>
+    <hr style="border-color: white" />
+    <h1>Order confirmation</h1>
+    <h3>Cuatomer Details</h3>
+    <table
+      width="100%"
+      cellspacing="0"
+      cellpadding="0"
+      class="table table-dark"
+    >
+      <tr>
+        <th scope="row">Name:</th>
+        <th scope="row">{{ order.buyer.complete_name }}</th>
+      </tr>
+      <tr>
+        <th scope="row">Address:</th>
+        <th scope="row">{{ order.buyer.address }}</th>
+      </tr>
+      <tr>
+        <th scope="row">City:</th>
+        <th scope="row">{{ order.buyer.city }}</th>
+      </tr>
+      <tr>
+        <th scope="row">Email Address:</th>
+        <th scope="row">{{ order.buyer.created_by.email }}</th>
+      </tr>
+      <tr>
+        <th scope="row">Phone:</th>
+        <th scope="row">{{ order.buyer.phone }}</th>
+      </tr>
+    </table>
+    <h3>Products</h3>
+    <table class="table table-dark">
+      <thead>
+        <tr>
+          <th scope="col">Product</th>
+          <th scope="col">Product Varient</th>
+          <th scope="col">Price</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in order.orderitems.all %}
+        <tr>
+          <td>{{ item.product.title }}</td>
+          <td>{{ item.product_varient }}</td>
+          <td>Rs. {{ item.product.price }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>Rs.{{ item.get_total_price }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
 </html>

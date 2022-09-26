@@ -9,5 +9,5 @@ class OrderVarifyForm(forms.ModelForm):
         model = Order
         fields = ['paid_slip']
         widgets = {
-            'paid_s;ip': forms.FileInput(),
+            'paid_slip': forms.FileInput(),
         }

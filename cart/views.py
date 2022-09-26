@@ -10,7 +10,7 @@ from product.models import Category
 from .cart import Cart
 from .forms import CheckoutForm
 
-from order.utilities import checkout, notify_customer
+from order.utilities import checkout, notify_customer, notify_ven
 
 
 def cart_detail(request):
@@ -38,7 +38,8 @@ def cart_detail(request):
             order = checkout(request, cart.get_total_cost(), current_user)
 
             cart.clear()
-            # notify_customer(order)
+            notify_customer(order)
+            notify_ven(order)
 
             return redirect('success')
         else:
@@ -48,6 +49,7 @@ def cart_detail(request):
     remove_from_cart = request.GET.get('remove_from_cart', '')
     change_quantity = request.GET.get('change_quantity', '')
     quantity = request.GET.get('quantity', 0)
+    varient = request.GET.get('varient', '')
 
     if remove_from_cart:
         cart.remove(remove_from_cart)
@@ -55,14 +57,14 @@ def cart_detail(request):
         return redirect('cart')
 
     if change_quantity:
-        cart.add(change_quantity, quantity, True)
+        cart.add(change_quantity, varient, quantity, True)
 
         return redirect('cart')
 
-    return render(request, 'cart/cart.html', {'categories':categories})
+    return render(request, 'cart/cart.html', {'categories': categories})
 
 
 def success(request):
     categories = Category.objects.all()
-    
-    return render(request, 'cart/success.html',{'categories':categories})
+
+    return render(request, 'cart/success.html', {'categories': categories})

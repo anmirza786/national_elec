@@ -24,7 +24,7 @@ def search(request):
         page_obj = paginator.get_page(1)
         pages = paginator.page(1)
     categories = Category.objects.all()
-    return render(request, 'product/search.html', {'query': query, 'page_obj': page_obj, 'product': paginator, 'pages': pages,'categories':categories})
+    return render(request, 'product/search.html', {'query': query, 'page_obj': page_obj, 'product': paginator, 'pages': pages, 'categories': categories})
 
 
 def product(request, category_slug, product_slug):
@@ -45,9 +45,10 @@ def product(request, category_slug, product_slug):
 
         if form.is_valid():
             quantity = form.cleaned_data['quantity']
+            varient = form.cleaned_data['varient']
             if request.user.is_authenticated:
                 cart.add(product_id=product.id,
-                         quantity=quantity, update_quantity=False)
+                         quantity=quantity, product_varient=varient, update_quantity=False)
 
                 messages.success(request, 'The product was added to the cart')
 
@@ -62,14 +63,15 @@ def product(request, category_slug, product_slug):
     if len(similar_products) >= 4:
         similar_products = random.sample(similar_products, 4)
 
+    categories = Category.objects.all()
     context = {
         'form': form,
         'product': product,
         'similar_products': similar_products,
-        'imagesstring': "[" + imagesstring.rstrip(',') + "]"
+        'imagesstring': "[" + imagesstring.rstrip(',') + "]",
+        'categories': categories
     }
-    categories = Category.objects.all()
-    return render(request, 'product/product.html', context,{'categories':categories})
+    return render(request, 'product/product.html', context)
 
 
 def category(request, category_slug):
@@ -102,7 +104,7 @@ def category(request, category_slug):
             page_obj = paginator.get_page(1)
             pages = paginator.page(1)
     categories = Category.objects.all()
-    return render(request, 'product/category.html', {'category': category, 'page_obj': page_obj, 'product': paginator, 'pages': pages, 'subcat': subcat,'categories':categories})
+    return render(request, 'product/category.html', {'category': category, 'page_obj': page_obj, 'product': paginator, 'pages': pages, 'subcat': subcat, 'categories': categories})
 
 
 def veiwProducts(request):

@@ -77,12 +77,12 @@
         <div class="notification is-success is-toast" style="color: white">
           {{ message }}
         </div>
-        {% endfor %} {% endif %} {% if request.user.is_authenticated %}
-         {% if request.user.buyer %}
+        {% endfor %} {% endif %} {% if request.user.is_authenticated %} 
+        {% if request.user.buyer %}
         <form method="post" action=".">
           {% csrf_token %}
 
-          <div class="form-field" style="width: 160px !important">
+          <div class="form-field" style="width: 200px !important">
             <label for="quantity" style="color: white; padding-bottom: 5px"
               >Quantity</label
             >
@@ -94,39 +94,32 @@
               class="form-control"
               min="1"
             />
-
+            <div style="margin: 20px"></div>
+            <label for="varient" style="color: white; padding-bottom: 5px; padding-right: 10px;">Select Varient</label>
+            <select name="varient" id="varient">
+              {% for varient in product.varients.all %}
+                <option value="{{ varient.varient }}">
+                  {{ varient.varient }}
+                </option>
+              {% endfor %}
+            </select>
+            {% comment %} <select class="form-control">
+              {% for color_obj in object.productcolor_set.all %}
+                  <option value="{{ color_obj.id }}">{{ color_obj }}
+                  </option>
+              {% endfor %}
+          </select> {% endcomment %}
             <button class="btn btn-mail-primary" style="margin-top: 10px">
               Add to cart
             </button>
           </div>
         </form>
-        {% endif %} {% else %}
-        <form method="post" style="width: 160px !important">
-          {% csrf_token %}
-          <label for="quantity" style="color: white; padding-bottom: 5px"
-            >Quantity</label
-          >
-          <input
-            id="quantity"
-            type="number"
-            name="quantity"
-            value="1"
-            class="form-control"
-            min="1"
-          />
-          <button
-            onclick="click()"
-            class="btn btn-mail-primary"
-            style="margin-top: 10px"
-          >
-            Add to cart
-          </button>
-        </form>
+        {% endif %}
         {% endif %}
       </div>
     </div>
   </div>
-  <div class="footer" style="background: transparent;">
+  <div class="footer" style="background: transparent">
     <p>Copyright © 2022 StarSOft.com.pk</p>
   </div>
 </section>
@@ -157,9 +150,5 @@
   Vue.createApp(ProductApp).mount("#productapp");
   console.log(ProductApp);
 </script>
-<script>
-  function click() {
-    alert("Clicked");
-  }
-</script>
+
 {% endblock %}

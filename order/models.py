@@ -37,6 +37,7 @@ class OrderItem(models.Model):
         Order, related_name='orderitems', on_delete=models.CASCADE)
     product = models.ForeignKey(
         Product, related_name='productitems', on_delete=models.CASCADE)
+    product_varient = models.CharField(null=True, blank=True, max_length=255)
     buyer = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=8, decimal_places=2)
     quantity = models.IntegerField(default=1)

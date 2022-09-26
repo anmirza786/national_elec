@@ -59,7 +59,7 @@
       alt=""
       style="width: 100px"
     />
-    <h4>National Electronics</h4>
+    <h4>National Electric and Lights</h4>
     <hr style="border-color: white" />
     <h1>Order confirmation</h1>
     <h3>Cuatomer Details</h3>
@@ -83,7 +83,7 @@
       </tr>
       <tr>
         <th scope="row">Email Address:</th>
-        <th scope="row">{{ order.buyer.email }}</th>
+        <th scope="row">{{ order.buyer.created_by.email }}</th>
       </tr>
       <tr>
         <th scope="row">Phone:</th>
@@ -95,6 +95,7 @@
       <thead>
         <tr>
           <th scope="col">Product</th>
+          <th scope="col">Product Varient</th>
           <th scope="col">Price</th>
           <th scope="col">Quantity</th>
           <th scope="col">Total</th>
@@ -104,6 +105,7 @@
         {% for item in order.orderitems.all %}
         <tr>
           <td>{{ item.product.title }}</td>
+          <td>{{ item.product_varient }}</td>
           <td>Rs. {{ item.product.price }}</td>
           <td>{{ item.quantity }}</td>
           <td>Rs.{{ item.get_total_price }}</td>
