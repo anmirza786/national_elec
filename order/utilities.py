@@ -12,9 +12,13 @@ def checkout(request, amount, user):
     order = Order.objects.create(buyer=user, paid_amount=amount)
 
     for item in Cart(request):
-        print(item)
-        OrderItem.objects.create(
-            order=order, product=item['product'], buyer=user, price=item['product'].price, quantity=item['quantity'], product_varient=item['product_varient'])
+        # print(item)
+        if item['product'].discount_active == False:
+            OrderItem.objects.create(
+                order=order, product=item['product'], buyer=user, price=item['product'].price, quantity=item['quantity'], product_varient=item['product_varient'])
+        else:
+            OrderItem.objects.create(
+                order=order, product=item['product'], buyer=user, price=item['product'].discounted_price, quantity=item['quantity'], product_varient=item['product_varient'])
 
     return order
 

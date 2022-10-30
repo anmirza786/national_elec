@@ -44,18 +44,14 @@ CART_SESSION_ID = 'cart'
 # EMAIL_HOST_USER='anmirza68@gmail.com'
 # EMAIL_HOST_PASSWORD = 'Ahmadmirza@123'
 # DEFAULT_FROM_EMAIL = 'anmirza68@gmail.com'
-# EMAIL_HOST = 'smtp.mailtrap.io'
-# EMAIL_HOST_USER = 'ca62f5ec17dcb4'
-# EMAIL_HOST_PASSWORD = '504651e4dbe3c1'
-# EMAIL_PORT = '2525'
-
 EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'nel.com.pk'  #Hosted on namecheap Ex: mail.pure.com
 # EMAIL_USE_TLS = True
 EMAIL_PORT = 26 # I use this for SSL
 EMAIL_HOST_USER = 'noreply@nel.com.pk' # Ex: info@pure.com
 DEFAULT_FROM_EMAIL = 'noreply@nel.com.pk'
-EMAIL_HOST_PASSWORD = 'nationalelectronics@123' 
+EMAIL_HOST_PASSWORD = 'nationalelectronics@123'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -65,12 +61,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # ckeditor
+    'ckeditor',
+    'ckeditor_uploader',
+    # Apps
     'cart',
     'core',
     'order',
     'product',
     'vendor',
     'buyer',
+    # widgets
     'widget_tweaks'
 ]
 
@@ -112,8 +113,12 @@ WSGI_APPLICATION = 'interiorshop.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ryksdper_national_electronics',
+        'USER': 'ryksdper_national_electronics',
+        'PASSWORD': 'nationalelectronics@123',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 
@@ -137,6 +142,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -155,10 +162,22 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static'
-]
-# STATIC_ROOT = BASE_DIR / 'static'
+
+STATIC_ROOT = '/home/ryksdper/Nel.com.pk/static'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media/'
+MEDIA_ROOT = '/home/ryksdper/Nel.com.pk/media'
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+# CK Editor Configrations
+
+
+CKEDITOR_JQUERY_URL = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js'
+
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_IMAGE_BACKEND = "pillow"
+
+CKEDITOR_CONFIGS = {
+    "default": {
+        "removePlugins": "stylesheetparser",
+    }
+}

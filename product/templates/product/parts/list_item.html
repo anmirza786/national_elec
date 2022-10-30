@@ -1,11 +1,72 @@
 <div class="col-lg-4 templatemo-item-col all att soon">
-  <div href="{% url 'product' product.category.slug product.slug %}" class="meeting-item">
+  <div
+    href="{% url 'product' product.category.slug product.slug %}"
+    class="meeting-item"
+    style="height: 400px !important"
+  >
     <div class="thumb">
+      {% if product.discount_active %}
+      <div class="price">
+        <span
+          style="
+            font-size: 10px;
+            text-decoration: line-through;
+            background: red;
+            color: white;
+          "
+          >Rs.{{ product.price }}</span
+        >
+        <span>Rs.{{ product.discounted_price }}</span>
+      </div>
+      <div style="position: absolute; left: 20px; top: 70px">
+        <span
+          style="
+            font-size: 16px;
+            color: rgba(250, 250, 250, 1);
+            font-weight: 600;
+            background-color: #00c632;
+            padding: 7px 12px;
+            border-radius: 10px;
+          "
+          >{{ product.discount_percent }} % off</span
+        >
+      </div>
+      {% else %}
       <div class="price">
         <span>Rs.{{ product.price }}</span>
       </div>
-      <a href="{% url 'product' product.category.slug product.slug %}"><img id="product-image"
-          src="{{ product.image.url }}" alt="" /></a>
+      {% endif %} {% if product.product_status == 3 %}
+      <div style="position: absolute; right: 20px; top: 20px">
+        <span
+          style="
+            font-size: 16px;
+            color: rgba(250, 250, 250, 1);
+            font-weight: 600;
+            background-color: #a12c2f;
+            padding: 7px 12px;
+            border-radius: 10px;
+          "
+          >Out of Stock</span
+        >
+      </div>
+      {% elif product.product_status == 1 %}
+      <div style="position: absolute; right: 20px; top: 20px">
+        <span
+          style="
+            font-size: 16px;
+            color: rgba(250, 250, 250, 1);
+            font-weight: 600;
+            background-color: black;
+            padding: 7px 12px;
+            border-radius: 10px;
+          "
+          >Comming Soon</span
+        >
+      </div>
+      {% endif %}
+      <a href="{% url 'product' product.category.slug product.slug %}"
+        ><img id="product-image" src="{{ product.image.url }}" alt=""
+      /></a>
     </div>
     <div class="down-content">
       <h4>{{ product.title }}</h4>

@@ -26,26 +26,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="row" id="products-list">
-                    <hr style="background: white;" />
-          <h5 style="color: white;text-align: center;padding: 10px;padding-top:0px;">
-            Categories
-          </h5>
-          <hr style="background: white;" />
-          <div class="col-lg-12">
-            <div class="filters" style="margin-bottom: 20px !important;">
-              <div>
-                {% for category in categories %}
-                {% if category.catlevel == 1 %}
-                <a href="{% url 'category' category.slug %}">{{category.title}}</a>
-                {% endif %}
-                {% endfor %}
-                
-              </div>
-            </div>
-          </div>
-          <hr style="background: white;" />
-          <h5 style="color: white;text-align: center;padding: 10px;padding-top:0px;">Product Status</h5>
-          <hr style="background: white;" />
+                    
           <div class="col-lg-12">
             <div class="filters" style="margin-bottom: 20px !important;">
               <div>

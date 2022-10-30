@@ -18,7 +18,11 @@ class Cart(object):
             self.cart[str(p)]['product'] = Product.objects.get(pk=p)
 
         for item in self.cart.values():
-            item['total_price'] = item['product'].price * item['quantity']
+            if item['product'].discount_active == False:
+                item['total_price'] = item['product'].price * item['quantity']
+                # print("cart product", )
+            else:
+                item['total_price'] = item['product'].discounted_price * item['quantity']
 
             yield item
 
@@ -26,7 +30,7 @@ class Cart(object):
         return sum(item['quantity'] for item in self.cart.values())
 
     def add(self, product_id, product_varient='', quantity=1, update_quantity=False):
-        
+
         product_id = str(product_id)
 
         if product_id not in self.cart:
@@ -57,5 +61,10 @@ class Cart(object):
     def get_total_cost(self):
         for p in self.cart.keys():
             self.cart[str(p)]['product'] = Product.objects.get(pk=p)
-
-        return sum(item['quantity'] * item['product'].price for item in self.cart.values())
+        s = 0
+        for item in self.cart.values():
+            if item['product'].discount_active == True:
+                s = s+(item['quantity'] * item['product'].discounted_price)
+            else:
+                s = s+(item['quantity'] * item['product'].price)
+        return s

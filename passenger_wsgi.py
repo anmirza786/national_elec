@@ -1,0 +1,1 @@
+from interiorshop.wsgi import application

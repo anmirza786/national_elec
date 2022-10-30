@@ -4,9 +4,9 @@ from pyexpat import model
 from itertools import product
 from django.contrib import admin
 from django.core.files import File
-from .models import Category, Product, ProductImage, ProductVarient
+from .models import Category, Product, ProductImage, ProductColor
 
-
+admin.AdminSite.enable_nav_sidebar = False
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('title', 'slug', 'parent')
     exclude = ('slug',)
@@ -15,14 +15,14 @@ class CategoryAdmin(admin.ModelAdmin):
 class ProductImageAdmin(admin.TabularInline):
     model = ProductImage
     extra = 1
-    max_num = 5
+    max_num = 10
     min_num = 1
 
 
 class ProductVarientAdmin(admin.TabularInline):
-    model = ProductVarient
-    extra = 1
-    max_num = 5
+    model = ProductColor
+    extra = 0
+    max_num = 10
     min_num = 1
 
 
@@ -32,11 +32,12 @@ class ProductAdmin(admin.ModelAdmin):
         ProductImageAdmin,
         ProductVarientAdmin,
     ]
-    list_display = ('title', 'category', 'price', 'date_added')
+    search_fields = ['title', ]
+    list_display = ('title', 'category', 'price', 'discount_percent', 'discounted_price', )
     list_display_links = ('title', )
     list_filter = ('category', )
     exclude = ('slug',)
-
+    list_editable = ( 'price', 'discount_percent', 'discounted_price',)
     class Meta:
         model = Product
 

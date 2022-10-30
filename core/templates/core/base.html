@@ -12,7 +12,7 @@
   <link rel="icon" type="image/png" href="{% static 'assets/images/logo.png' %}">
   <!-- For apple devices -->
   <link rel="apple-touch-icon" type="image/png" href="{% static 'assets/images/logo.png' %}" />
-  <title>National Electric & Light</title>
+  <title>National Electric & Lights</title>
 
   <!-- Bootstrap core CSS -->
   <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -182,24 +182,40 @@ https://templatemo.com/tm-569-edu-meeting
     width: 200px;
   }
 }
+.footer{
+    background:transparent;
+    margin-top: 50px;
+    padding: 25px 0 !important;
+}
+.footer p{
+    margin: 0;
+    color: black !important;
+}
+#meetings{
+    padding: 40px 0;
+    padding-bottom:0;
+    
+}
+input{
+    border-radius: 15px !important;
+}
+.meetings-page{
+    background-image: none !important;
+}
+.pagination ul li a{
+    border: 1px solid #a12c2f !important;
+}
+.meetings-page .filters a{
+    border: 1px solid #a12c2f !important;
+}
 </style>
 
 <body class="loaded" id="body">
   <div class="page-wrapper">
     <header class="header">
-        <div class="header-top" style="height: 35px;">
-            <div class="container">
-                <div class="header-left">
-                    <a href="{% url 'frontpage' %}#contact" style="padding: 0 5px;">Contact Us</a>
-                    <span class="divider d-lg-show"></span>
-                    <a href="" style="padding: 0 5px;"><i class="w-icon-facebook"></i></a>
-                    <a href="" style="padding: 0 5px;"><i class="w-icon-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <!-- End of Header Top -->
 
-        <div class="header-middle" style="background: #1F262C; color: white;">
+
+        <div class="header-middle" style="background: #1F262C; color: white; padding: 20px 0;">
             <div class="container">
                 <div class="header-left mr-md-4">
                     <a href="#" onclick="showNav()" class="mobile-menu-toggle  w-icon-hamburger"
@@ -212,7 +228,7 @@ https://templatemo.com/tm-569-edu-meeting
                         class="header-search hs-expanded hs-round d-none d-md-flex input-wrapper">
 
                         <input type="text" class="form-control" name="search" id="search" placeholder="Search in..."
-                            required style="border-left: 2px solid white; background: transparent !important; color: white;" />
+                            required style="border-left: 2px solid white; background: transparent !important; color: white; border-radius: 0 !important;" />
                         <button class="btn btn-search" type="submit" style="background: transparent;color: white;border: 2px solid white;border-left: none;"><i class="w-icon-search"></i>
                         </button>
                     </form>
@@ -265,16 +281,24 @@ https://templatemo.com/tm-569-edu-meeting
                                     {% for category in categories %}
                                     {% if category.catlevel == 1 %}
                                     <li class="has-submenu">
-                                        <a href="{% url 'category' category.slug %}" href="shop-fullwidth-banner.html">
+                                        <a href="#" href="shop-fullwidth-banner.html">
                                             {{category.title}}
                                         </a>
                                         <ul class="submenu"
-                                        style="top: 0;padding:0;"
+                                        style="top: 0;"
                                         >
                                             {% for cat in categories %}
-                                            {% if cat.parent.id == category.id %}
-                                            <li style="padding: 13px 10px">
-                                                <a href="{% url 'category' cat.slug %}" style='padding: 0'> {{cat.title}} </a>
+                                            {% if cat.parent.id == category.id and cat.catlevel == 2 %}
+                                            <li class="has-submenu" style="position: relative;
+                                            line-height: 1;">
+                                                <a style="padding: 1.3rem 1rem;" href="#" style='padding: 0'> {{cat.title}} </a>
+                                                <ul class="submenu" style="top: 0;padding:0;">
+                                                    {% for c in categories%}
+                                                    {% if c.parent.id == cat.id and c.catlevel == 3 %}
+                                                    <li><a style="padding: 1.3rem 1rem;" href="{% url 'category' c.slug %}" style='padding: 0'> {{c.title}} </a></li>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </ul>
                                             </li>
                                             {% endif %}
                                             {% endfor %}
@@ -341,9 +365,9 @@ https://templatemo.com/tm-569-edu-meeting
     <!-- End of .mobile-menu-close -->
 
     <div class="mobile-menu-container scrollable">
-        <form action="#" method="get" class="input-wrapper">
-            <input type="text" class="form-control" name="search" autocomplete="off" placeholder="Search"
-                required />
+        <form method="get" action="{% url 'search' %}" class="input-wrapper">
+            <input type="text" class="form-control" name="search" autocomplete="off" id="search" placeholder="Search"
+                required style="border-radius: 0 !important;" />
             <button class="btn btn-search" type="submit" style="margin: 0;">
                 <i class="w-icon-search"></i>
             </button>
@@ -402,9 +426,19 @@ https://templatemo.com/tm-569-edu-meeting
                                         </a>
                                         <ul id="sub{{category.id}}">
                                             {% for cat in categories %}
-                                            {% if cat.parent.id == category.id %}
+                                            {% if cat.parent.id == category.id and cat.catlevel == 2 %}
                                             <li style="padding: 13px 10px">
-                                                <a href="{% url 'category' cat.slug %}" style='padding: 0'> {{cat.title}} </a>
+                                                <a onclick="showSubNav('sub{{cat.id}}')" style='padding: 0'> {{cat.title}} <span class="toggle-btn" onclick="showSubNav()"></span></a>
+                                                <ul id="sub{{cat.id}}">
+                                                    {% for c in categories %}
+                                                    {% if c.parent.id == cat.id and c.parent.catlevel == 3 %}
+                                                    <li style="padding: 13px 10px">
+                                                        <a href="{% url 'category' c.slug %}" style='padding: 0'> {{c.title}} </a>
+                                                    </li>
+                                                    {% endif %}
+                                                    {% endfor %}
+
+                                                </ul>
                                             </li>
                                             {% endif %}
                                             {% endfor %}
@@ -485,14 +519,20 @@ https://templatemo.com/tm-569-edu-meeting
     }
 </script>
 <script>
-    function showSubNav(id) {
+    function showSubNav(id,btnid,btn2id) {
         const body = document.getElementById(id);
+        const btn = document.getElementById(btnid);
+        const btn2 = document.getElementById(btn2id);
         console.log(body.style.display);
         if (body.style.display === "none") {
             body.style.display = "block"
+            btn.style.display= "none"
+            btn2.style.display= "block"
         }
         else {
             body.style.display = 'none'
+            btn.style.display= "block"
+            btn2.style.display= "none"
         }
     }
 </script>

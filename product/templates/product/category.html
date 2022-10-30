@@ -11,7 +11,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <h2>Category</h2>
+                <h2>{{category.parent.title}}</h2>
                 <h6>{{category.title}}</h6>
             </div>
         </div>
@@ -22,26 +22,21 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                {% if category.catlevel == 1 %}
-                <hr style="background: white;" />
-                <h5 style="color: white;text-align: center;padding: 10px;padding-top:0px;">
-                    Categories
-                </h5>
-                <hr style="background: white;" />
+                
                 <div class="col-lg-12">
-                    <div class="filters" style="margin-bottom: 20px !important;">
                     <div>
-                        {% for category in subcat %}
-                        {% if category.catlevel == 2 %}
-                        <a href="{% url 'category' category.slug %}">{{category.title}}</a>
+                    <div style="text-align: center; color: white !important;">
+                        <a style=" color: white !important;" href="{% url 'frontpage' %}">Home > </a>
+                        {% if category.catlevel == 1 %}
+                        <a style=" color: white !important;" href="{% url 'category' category.slug %}">{{category.title}}</a>
+                        {% else %}
+                        <a style=" color: white !important;" href="{% url 'category' category.parent.slug %}">{{category.parent.title}} > </a>
+                        <a style=" color: white !important;" href="{% url 'category' category.slug %}">{{category.title}}</a>
                         {% endif %}
-                        {% endfor %}
-                        
                     </div>
                     </div>
                 </div>
                 <hr style="background: white;" />
-                {% endif %}
                 <div class="row" id="products-list">
                     <div class="col-lg-12">
                         <div class="row grid">

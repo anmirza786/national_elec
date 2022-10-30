@@ -9,6 +9,7 @@ stripe = "*"
 pillow = "*"
 django-widget-tweaks = "*"
 autopep8 = "*"
+django-ckeditor = "*"
 
 [dev-packages]
 autopep8 = "*"

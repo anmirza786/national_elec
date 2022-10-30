@@ -21,31 +21,28 @@
       <div class="col-lg-12">
         <div class="row" style="justify-content: center; align-items: center">
           <div class="col-lg-6">
-            <div class="box-element" style="color: white !important">
+            <div class="box-element">
               <form method="post" action=".">
                 {% csrf_token %} {% for field in form.visible_fields %}
                 <div class="form-group">
-                  <label class="form-label">{{ field.label_tag }}</label>
-                  {% render_field field class="form-control"%}
+                  <label class="form-label" style="color: black;">{{ field.label_tag }}</label>
+                  {% render_field field class="form-control" style="color: black; border-color: black;"%}
 
                   <!-- <small class="form-text text-muted">{{ field.help_text }}</small><br> -->
-                  {% if field.errors %}
-                  <small class="form-text" style="color: red"
-                    >{{ field.help_text }}</small
-                  >
-                  {% endif %}
+                  
                 </div>
                 {% endfor %}
+                {% if form.errors %}
+                    <small class="form-text" style="color: red">Note: {{ form.errors }}</small>
+                  {% endif %}
+              <a href="{% url 'reset_password' %}" style="font-size: 1rem; color: black;"
+                >Forgot Password?</a
+              >
                 <div class="form-field" style="margin-top: 15px">
                   <button class="btn btn-mail-primary">Login</button>
                 </div>
               </form>
-              <hr />
-              <a href="{% url 'reset_password' %}" style="font-size: 0.8rem"
-                >Forgot Password?</a
-              >
-              <hr />
-              <p style="color: white">Don't have an account?</p>
+              <p style="color: black;">Don't have an account?</p>
               <a href="{% url 'signup' %}" class="btn btn-mail-secondary"
                 >Sign up</a
               >

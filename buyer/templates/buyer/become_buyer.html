@@ -27,14 +27,12 @@
               <form method="post" action=".">
                 {% csrf_token %} {% for field in form.visible_fields %}
                 <div class="form-group">
-                  <label class="form-label">{{ field.label_tag }}</label>
-                  {% render_field field class="form-control"%}
+                  <label class="form-label" style="color: black;">{{ field.label_tag }}</label>
+                  {% render_field field class="form-control" style="color: black; border-color: black;"%}
 
                   <!-- <small class="form-text text-muted">{{ field.help_text }}</small><br> -->
-                  {% if field.errors %}
-                  <small class="form-text" style="color: red"
-                    >{{ field.help_text }}</small
-                  >
+                  {% if form.errors %}
+                    <small class="form-text" style="color: red">{{ field.errors }}</small>
                   {% endif %}
                 </div>
                 {% endfor %}
@@ -43,7 +41,7 @@
                 </div>
               </form>
               <hr />
-              <p style="color: white">Already have an account?</p>
+              <p style="color: black">Already have an account?</p>
               <a href="{% url 'login' %}" class="btn btn-mail-secondary"
                 >Log in</a
               >

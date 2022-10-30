@@ -1,12 +1,10 @@
 import random
-from turtle import title
 from cart.cart import Cart
 from django.db.models import Q
 from .forms import AddToCartForm
 from django.contrib import messages
 from .models import Category, Product
 from .models import ProductStatusEnum
-from asyncio.windows_events import NULL
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -94,7 +92,7 @@ def category(request, category_slug):
     else:
         product = Product.objects.filter(category=category)
 
-    if product != NULL:
+    if product:
         paginator = Paginator(product, 9)
         page_number = request.GET.get('page')
         try:

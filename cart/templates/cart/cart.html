@@ -2,14 +2,14 @@
 
 
 
-<section class="meetings-page" style="color: white;">
-  <h2 style="text-align: center;">Cart</h2>
+<section class="meetings-page" style="color: white !important; padding: 20px !important; background: url(https://nel.com.pk/static/assets/images/meetings-page-bg.jpg) !important;">
+  <h2 style="text-align: center;color:white;">Cart</h2>
   {% if cart %}
   <div class="container meetings-page header-text" id="meetings">
     <div class="row">
       <div class="col-lg-12">
         <div class="box-element">
-          <a class="btn btn-outline-danger" href="{% url 'frontpage' %}">&#x2190; Continue Shoping</a>
+          <a class="btn" href="{% url 'frontpage' %}" style="color: #dc3545; border-color: #dc3545;">&#x2190; Continue Shoping</a>
           <br /><br />
           <table class="table">
             <tr>
@@ -27,8 +27,8 @@
         <div class="box-element">
           <div class="row">
             <div style="flex: 2"></div>
-            <div style="flex: 2"><strong>Item</strong></div>
-            <div style="flex: 2"><strong>Varient</strong></div>
+            <div style="flex: 1"><strong>Item</strong></div>
+            <div style="flex: 1">Color</div>
             <div style="flex: 1"><strong>Price</strong></div>
             <div style="flex: 1"><strong>Quantity</strong></div>
             <div style="flex: 1"><strong>Total</strong></div>
@@ -39,9 +39,13 @@
             <div style="flex: 2">
               <img style="width: 100px;" class="row-image" src="{{ item.product.get_thumbnail }}" />
             </div>
-            <div style="flex: 2">{{ item.product.title }}</div>
-            <div style="flex: 2">{{ item.product_varient }}</div>
+            <div style="flex: 1">{{ item.product.title }}</div>
+            <div style="flex: 1">{{ item.product_varient }}</div>
+            {% if item.product.discount_active == True%}
+            <div style="flex: 1">Rs. {{ item.product.discounted_price }}</div>
+            {% else %}
             <div style="flex: 1">Rs. {{ item.product.price }}</div>
+            {% endif %}
             <div style="flex: 1; justify-content: center; align-items: center">
               <div style="display: flex;">
                 <div class="quantity" style="align-self: center; margin-right: 10px;">{{ item.quantity }}</div>
@@ -53,7 +57,7 @@
             </div>
             <div style="flex: 1">Rs.{{ item.total_price }}</div>
             <div style="flex: 1">
-              <a class="btn btn-danger" href="?remove_from_cart={{ item.id }}" class="delete">&#9003;</a>
+              <a class="btn btn-danger" href="?remove_from_cart={{ item.id }}" style="color: #dc3545; border-color: #dc3545;" class="delete"><i class="fa fa-trash"></i></a>
             </div>
           </div>
           {% endfor %}
@@ -103,7 +107,7 @@
     <p style="color: white; text-align: center;">You don't have any products in your cart!</p>
   </div>
   {% endif %}
-  <div class="footer" style="background: transparent;">
+  <div class="footer" style="background: transparent; color: white;">
     <p>Copyright © 2022 StarSOft.com.pk
 
   </div>

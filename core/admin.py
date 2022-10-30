@@ -1,9 +1,9 @@
 from django.contrib import admin
 
 from core.models import Contact, PopularClients
-admin.site.site_header = "National Electronics Admin"
-admin.site.site_title = "Welcome to National Electronics Admin"
-admin.site.index_title = "Welcome to National Electronics Admin"
+admin.site.site_header = "National Electric & Lights Admin"
+admin.site.site_title = "Welcome to National Electric & Lights Admin"
+admin.site.index_title = "Welcome to National Electric & Lights Admin"
 # Register your models here.
 class ContactAdmin(admin.ModelAdmin):
     list_display = ('name','email','message')

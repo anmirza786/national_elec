@@ -1,9 +1,11 @@
 import re
 from PIL import Image
 from io import BytesIO
+from ckeditor import fields
 from django.db import models
 from django.core.files import File
 from django.core.validators import MaxValueValidator, MinValueValidator
+from decimal import Decimal
 
 # from vendor.models import Vendor
 
@@ -15,10 +17,16 @@ class Category(models.Model):
         "self", null=True, blank=True, on_delete=models.CASCADE, verbose_name='Parent Category', default=None)
     slug = models.SlugField(max_length=255, blank=True)
     catlevel = models.PositiveIntegerField(
-        default=1, verbose_name='Category Level', validators=[MaxValueValidator(2), MinValueValidator(1)])
+        default=1, verbose_name='Category Level', validators=[MaxValueValidator(3), MinValueValidator(1)])
+
+    def get_categories(self):
+        if self.parent is None:
+            return self.title + ' -> level ' + str(self.catlevel)
+        else:
+            return self.parent.get_categories() + ' -> ' + self.title + ' -> level ' + str(self.catlevel)
 
     def __str__(self):
-        return self.title
+        return self.get_categories()
 
     def save(self):
         slug = self.title
@@ -28,6 +36,8 @@ class Category(models.Model):
         self.slug = slug
         if self.parent is None:
             self.catlevel = 1
+        elif self.parent is not None and self.parent.catlevel is 2:
+            self.catlevel = 3
         else:
             self.catlevel = 2
         return super().save()
@@ -63,10 +73,14 @@ class Product(models.Model):
         blank=False, null=False, verbose_name='Quantity Available', help_text='Enter the Available Quantity Greater than 0', default=0)
     product_status = models.SmallIntegerField(
         choices=ProductStatusEnum.choices, default=ProductStatusEnum.AVAILABLE)
-    description = models.TextField(blank=True, null=True)
+    description = fields.RichTextField()
     price = models.DecimalField(max_digits=20, decimal_places=2)
+    discount_percent = models.PositiveIntegerField(
+        default=0, verbose_name='Discount Percentage',validators=[MaxValueValidator(100), MinValueValidator(0)])
+    discounted_price = models.DecimalField(max_digits=20, decimal_places=2)
+    discount_active = models.BooleanField(default=False)
     date_added = models.DateTimeField(auto_now_add=True)
-    main_varient = models.CharField(max_length=255, blank=True, null=True)
+    # main_varient = models.CharField(max_length=255, blank=True, null=True)
     image = models.ImageField(upload_to='uploads/', blank=False, null=False)
     thumbnail = models.ImageField(upload_to='uploads/', blank=True, null=True)
 
@@ -103,6 +117,9 @@ class Product(models.Model):
         slug = slug.replace(" ", "_")
         slug = re.sub("[^A-Za-z0-9]", "", slug)
         self.slug = slug
+        discount = Decimal(self.price) * (self.discount_percent/Decimal(100))
+        discount = Decimal(self.price) - Decimal(discount)
+        self.discounted_price = discount
         return super().save()
 
 
@@ -141,7 +158,7 @@ class ProductImage(models.Model):
         return f'image:({str(id)})'
 
 
-class ProductVarient(models.Model):
+class ProductColor(models.Model):
     product = models.ForeignKey(
         Product, related_name='varients', on_delete=models.CASCADE)
-    varient = models.CharField(max_length=255, blank=True, null=True)
+    varient = models.CharField(max_length=255, blank=True, null=True,verbose_name="Color")
